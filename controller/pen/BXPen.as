@@ -174,12 +174,9 @@ package bloxley.controller.pen {
         *              *
         ***************/
 
-        public function press_Z(key:String, shift:Boolean, alt:Boolean, ctrl:Boolean) {
-            controller.respondTo("undo");
-        }
-
-        public function press_z(key:String, shift:Boolean, alt:Boolean, ctrl:Boolean) {        
-            controller.respondTo("reset");
+        public function press_Zz(key:String, shift:Boolean, alt:Boolean, ctrl:Boolean) {
+            var meth = shift ? "reset" : "undo";
+            if (ctrl) controller.respondTo(meth);
         }
 
         /****************************************
@@ -193,7 +190,6 @@ package bloxley.controller.pen {
             var keyChar = String.fromCharCode(event.charCode);
 
             if (keyCode >= 42) {
-                trace(keyCode);
                 callCascade([ "press_" + keyChar, "press_" + keyChar.toUpperCase() + keyChar.toLowerCase(), "press" ],
                             [ keyChar, event.shiftKey, event.altKey, event.ctrlKey ]);
             }
