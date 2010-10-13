@@ -17,25 +17,32 @@ package bloxley.controller.phase {
             this.controller = controller;
             this.phases = new Object();
             
+            addPhase( new BXPhase("Win",  this, { call: "beatLevel" }) );
+            addPhase( new BXPhase("Lose", this, { call: "lostLevel" }) );
         }
 
+        /************************
+        *                       *
+        * Initial Phase Methods *
+        *                       *
+        ************************/
+        
+        public function setInitialPhase(phaseName:String) {
+            initialPhase = phaseNamed(phaseName);
+        }
+        
         /****************
         *               *
         * Phase Methods *
         *               *
         ****************/
-
-        function addPhase(phase:BXPhase) {
+        
+        public function addPhase(phase:BXPhase) {
             var name = phase.name;
             phases[name] = phase;
-            phase.setPhaseTable(this);
-
-            if (phase.initial) {
-                initialPhase = phase;
-            }
         }
 
-        function phaseNamed(name:String):BXPhase {
+        public function phaseNamed(name:String):BXPhase {
             return phases[name];
         }
 
@@ -45,7 +52,7 @@ package bloxley.controller.phase {
         *               *
         ****************/
 
-        function mainLoop() {
+        public function mainLoop() {
             if (__currentPhase == null) __currentPhase = initialPhase;
 
             __currentPhase.run();
