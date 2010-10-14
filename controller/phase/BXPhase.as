@@ -1,4 +1,9 @@
 package bloxley.controller.phase {
+
+    import bloxley.base.BXObject;
+    import bloxley.controller.game.BXController;
+    //import bloxley.controller.phase.BXGameLoop;
+    import bloxley.controller.game.BXController;
     
     public class BXPhase extends BXObject {
         
@@ -10,10 +15,11 @@ package bloxley.controller.phase {
         // Main Loop elements
 
         var _runCount:Number;
+        var _lastCall;
         var _lastRun:Boolean;
-        var _nextPhase:BPPhase;
+        var _nextPhase:BXPhase;
 
-        public function BPPhase(name:String, gameLoop:BPGameLoop, options:Object) {
+        public function BXPhase(name:String, gameLoop:BXGameLoop, options:Object) {
             this.name = name;
             this.options = options;
             this.gameLoop = gameLoop;
@@ -26,8 +32,9 @@ package bloxley.controller.phase {
         *                    *
         *********************/
 
-        public function controller():BPController {
-            gameLoop.controller();
+        public function controller():BXController {
+            //gameLoop.controller();
+            return null;
         }
 
         public function executeOnController(methodName:String) {
@@ -44,31 +51,35 @@ package bloxley.controller.phase {
         *                   *
         ********************/
         
-        public function after(nextPhase:String, transition:String, options = null):BXPhase {
+        public function after(nextPhase:String, transition:String = "immediate", options = null):BXPhase {
             return this;
         }
         
-        public function pass(nextPhase:String, transition:String, options = null):BXPhase {
+        public function pass(nextPhase:String, transition:String = "immediate", options = null):BXPhase {
             return this;
         }
         
-        public function passEarly(nextPhase:String, transition:String, options = null):BXPhase {
+        // If this phase loops back on failure...
+        public function passEarly(nextPhase:String, transition:String = "immediate", options = null):BXPhase {
             return this;
         }
         
-        public function passLate(nextPhase:String, transition:String, options = null):BXPhase {
+        // If this phase loops back on failure...
+        public function passLate(nextPhase:String, transition:String = "immediate", options = null):BXPhase {
             return this;
         }
         
-        public function fail(nextPhase:String, transition:String, options = null):BXPhase {
+        public function fail(nextPhase:String, transition:String = "immediate", options = null):BXPhase {
             return this;
         }
         
-        public function failEarly(nextPhase:String, transition:String, options = null):BXPhase {
+        // If this phase loops back on success...
+        public function failEarly(nextPhase:String, transition:String = "immediate", options = null):BXPhase {
             return this;
         }
         
-        public function failLate(nextPhase:String, transition:String, options = null):BXPhase {
+        // If this phase loops back on success...
+        public function failLate(nextPhase:String, transition:String = "immediate", options = null):BXPhase {
             return this;
         }
         
@@ -128,15 +139,15 @@ package bloxley.controller.phase {
                 phaseName = options.failLate || options.failure;
             }
 
-            _nextPhase = phaseTable.phaseNamed(phaseName);
+            _nextPhase = gameLoop.phaseNamed(phaseName);
         }
 
-        public function nextPhase():BPPhase {
+        public function nextPhase():BXPhase {
             return _nextPhase;
         }
 
         public function cleanup() {
-            runCount = 0;
+            _runCount = 0;
         }
         
     }

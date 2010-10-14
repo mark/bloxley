@@ -10,12 +10,16 @@ package bloxley.controller.game {
     
     public class BXPlayController extends BXController {
 
+        var monitoringEvent:Boolean;
+        var eventsToMonitor:Array;
+        
         var gameLoop:BXGameLoop;
         
         public function BXPlayController(name: String, game:BXGame) {
             super(name, game);
             
             gameLoop = new BXGameLoop(this);
+            monitoringEvent = false;
             
             createPhases();
         }
@@ -54,7 +58,7 @@ package bloxley.controller.game {
     	    setInitialPhase("Starting Game");
     	}
     	
-    	public function phase(name:String, options:Object):BXPhase {
+    	public function phase(name:String, options:Object = null):BXPhase {
     	    var newPhase = new BXPhase(name, gameLoop, options);
     	    gameLoop.addPhase( newPhase );
 
@@ -66,6 +70,38 @@ package bloxley.controller.game {
     	    return [ "moveCharacter" ];
     	}
     	
+        /********************
+        *                   *
+        * Monitoring Events *
+        *                   *
+        ********************/
+        
+        public function monitorEvent() {
+            monitoringEvent = true;
+        }
+        
+        override public function respondTo(meth:String, args:Array = null) {
+            if (eventsToMonitor && eventsToMonitor.indexOf(meth) != -1) {
+                monitorEvent();
+            }
+
+            super.respondTo(meth, args);
+            
+            // In case no event is created...
+            monitoringEvent = false;
+        }
+        
+        override public function handleEvent(milestone:Boolean, events:Array) {
+            var newEvent = new BXEvent(this, milestone);
+            
+            newEvent.handle(events);
+            
+            if (monitoringEvent) {
+                gameLoop.eventToMonitor(newEvent);
+                monitoringEvent = false;
+            }
+        }
+        
     	/*************************
     	*                        *
     	* Built-In Phase Methods *
@@ -73,7 +109,8 @@ package bloxley.controller.game {
     	*************************/
 
     	public function startGame() {
-    	    // OVERRIDE ME!
+    	    // var firstPlayer = board().allActors().theFirst();
+    	    // minorEvent( new BXSelectAction(firstPlayer) );
     	}
     	
     	public function heartbeat() {
@@ -86,7 +123,7 @@ package bloxley.controller.game {
     	}
     	
     	public function beatLevel() {
-    	    // OVERRIDE ME!
+    	    // minorEvent( new BXEndOfLevelAction(this, true) );
     	}
     	
     	public function didLoseLevel():Boolean {
@@ -95,6 +132,20 @@ package bloxley.controller.game {
     	}
     	
     	public function lostLevel() {
+    	    // minorEvent( new BXEndOfLevelAction(this, false) );
+    	}
+    	
+    	/*****************************
+    	*                            *
+    	* Built-In Animation Methods *
+    	*                            *
+    	*****************************/
+    	
+    	public function animateBeatLevel(action:BXAction) {
+    	    // OVERRIDE ME!
+    	}
+    	
+    	public function animateLostLevel(action:BXAction) {
     	    // OVERRIDE ME!
     	}
     	

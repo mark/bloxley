@@ -1,13 +1,15 @@
 package bloxley.controller.phase {
 
+    import bloxley.base.BXObject;
     import bloxley.controller.game.BXController;
     import bloxley.controller.phase.BXPhase;
+    import bloxley.controller.event.BXEvent;
     
-    public class BXGameLoop {
+    public class BXGameLoop extends BXObject {
                 
         var controller:BXController;
         var phases:Object;
-        var initalPhase:BXPhase;
+        var initialPhase:BXPhase;
 
         // Main Loop elements
 
@@ -46,6 +48,16 @@ package bloxley.controller.phase {
             return phases[name];
         }
 
+        /***************************
+        *                          *
+        * Monitoring Event Methods *
+        *                          *
+        ***************************/
+        
+        public function eventToMonitor(event:BXEvent) {
+            trace("You monitored " + event);
+        }
+        
         /****************
         *               *
         * Main Run Loop *
@@ -56,17 +68,17 @@ package bloxley.controller.phase {
             if (__currentPhase == null) __currentPhase = initialPhase;
 
             __currentPhase.run();
-            var transition = __currentPhase.transition();
+            //var transition = __currentPhase.transition();
             __currentPhase = __currentPhase.nextPhase();
 
-            if (transition == BXPhase.STOP) {
-                // Do nothing... loop execution stops...
-            } else if (transition == BXPhase.IMMEDIATE) {
-                later('mainLoop');
-            } else {
-                var nextPhaseTimer = new BXTimer("Main Loop Timer", transition);
-                listenFor("BXTimerStop", nextPhaseTimer, mainLoop);
-            }
+            // if (transition == BXPhase.STOP) {
+            //     // Do nothing... loop execution stops...
+            // } else if (transition == BXPhase.IMMEDIATE) {
+            //     later('mainLoop');
+            // } else {
+            //     var nextPhaseTimer = new BXTimer("Main Loop Timer", transition);
+            //     listenFor("BXTimerStop", nextPhaseTimer, mainLoop);
+            // }
         }
         
     }

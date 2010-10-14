@@ -60,6 +60,7 @@ package bloxley.controller.game {
         }
         
         public function start() {
+            game.showBank("Main");
             onStart();
         }
         
@@ -228,6 +229,10 @@ package bloxley.controller.game {
         *                *
         *****************/
 
+        public function board():BXBoard {
+            return game.board();
+        }
+        
         override public function toString():String {
             return className();
         }
