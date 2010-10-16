@@ -108,6 +108,10 @@ package bloxley.controller.game {
         *             *
         **************/
 
+        public function pen():BXPen {
+            return currentPen;
+        }
+        
         public function createPens() {
             // OVERRIDE ME!!!
         }

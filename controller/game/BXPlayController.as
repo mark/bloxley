@@ -27,11 +27,15 @@ package bloxley.controller.game {
         override public function onStart() {
             setupTimer();
             switchToPen("Play");
+            gameLoop.mainLoop();
         }
         
         override public function createPens() {
             var pen = new BXPlayPen(this);
             pen.setName("Play");
+            
+            var pen1 = new BXGameOverPen(this);
+            pen1.setName("GameOver");
         }
     	
     	/****************
@@ -79,6 +83,10 @@ package bloxley.controller.game {
         public function monitorEvent() {
             monitoringEvent = true;
         }
+
+        public function monitorEvents(events:Array) {
+            eventsToMonitor = events;
+        }
         
         override public function respondTo(meth:String, args:Array = null) {
             if (eventsToMonitor && eventsToMonitor.indexOf(meth) != -1) {
@@ -97,11 +105,20 @@ package bloxley.controller.game {
             newEvent.handle(events);
             
             if (monitoringEvent) {
-                gameLoop.eventToMonitor(newEvent);
+                eventsToMonitor = null;
                 monitoringEvent = false;
+
+                gameLoop.eventToMonitor(newEvent);
             }
         }
         
+        public function nothing() {
+            eventsToMonitor = null;
+            monitoringEvent = false;
+
+            gameLoop.eventToMonitor(null);
+        }
+
     	/*************************
     	*                        *
     	* Built-In Phase Methods *
@@ -109,21 +126,24 @@ package bloxley.controller.game {
     	*************************/
 
     	public function startGame() {
-    	    // var firstPlayer = board().allActors().theFirst();
-    	    // minorEvent( new BXSelectAction(firstPlayer) );
+    	    var firstPlayer = board().allActors().thatCanBePlayer().theFirst();
+    	    selectPlayer( firstPlayer );
     	}
     	
     	public function heartbeat() {
     	    // OVERRIDE ME!
+    	    nothing();
     	}
     	
     	public function didBeatLevel():Boolean {
     	    // OVERRIDE ME!
-    	    return false;
+            return false;
     	}
     	
     	public function beatLevel() {
-    	    // minorEvent( new BXEndOfLevelAction(this, true) );
+    	    trace("beatLevel");
+    	    switchToPen("GameOver");
+    	    // minorEvent( new BXEndOfLevelAction(this, true), new BXSwitchPenAction(this, "GameOver") );
     	}
     	
     	public function didLoseLevel():Boolean {
@@ -132,7 +152,8 @@ package bloxley.controller.game {
     	}
     	
     	public function lostLevel() {
-    	    // minorEvent( new BXEndOfLevelAction(this, false) );
+    	    switchToPen("GameOver");
+    	    // minorEvent( new BXEndOfLevelAction(this, false), new BXSwitchPenAction(this, "GameOver") );
     	}
     	
     	/*****************************
@@ -181,9 +202,18 @@ package bloxley.controller.game {
         *                  *
         *******************/
         
-        public function moveCharacter(direction:BXDirection) {
+        public function selectPlayer(character:BXActor) {
+    	    minorEvent( new BXSelectAction(this, character) );
+        }
+        
+        public function selectNextPlayer() {
+            var nextPlayer = board().allActors().thatCanBePlayer().theNextAfter(selectedActor());
+            selectPlayer( nextPlayer );
+        }
+        
+        public function moveCharacter(direction:BXDirection, steps:int = 1) {
     	    if (selectedActor()) {
-        	    event( new BXMoveAction( selectedActor(), direction ) );
+        	    event( new BXMoveAction( selectedActor(), direction, steps ) );
     	    }
     	}
 

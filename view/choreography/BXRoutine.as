@@ -39,17 +39,11 @@ package bloxley.view.choreography {
         override public function start(...rest) {
             super.start();
 
-            tryStartingAnimations();
-        }
-
-        /********************
-        *                   *
-        * Finishing Methods *
-        *                   *
-        ********************/
-
-        override public function finish(...rest) {
-            super.finish();
+            if (animationChannel.isEmpty()) {
+                later("finish");
+            } else {
+                tryStartingAnimations();
+            }
         }
 
         /****************************

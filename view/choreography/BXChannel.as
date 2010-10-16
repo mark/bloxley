@@ -59,6 +59,16 @@ package bloxley.view.choreography {
             }
         }
 
+        /******************
+        *                 *
+        * Testing Methods *
+        *                 *
+        ******************/
+        
+        public function isEmpty():Boolean {
+            return active.isEmpty() && waiting.isEmpty();
+        }
+        
         /************************
         *                       *
         * Retrieving Animations *

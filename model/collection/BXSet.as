@@ -189,13 +189,11 @@ package bloxley.model.collection {
     	***********/
 
         public function thatAre(meth) {
-    		var ary = select(meth);
-    		return ary;
+    		return select(meth);
     	}
 
         public function thatAreNot(meth) {
-    		var ary = reject(meth);
-    		return ary;
+    		return reject(meth);
     	}
 
     	/**********
@@ -205,13 +203,11 @@ package bloxley.model.collection {
     	**********/
 
         public function ofType(key:String) {
-    		var ary = select( function(obj) { return obj.key() == key; } );
-    		return another(ary);
+    		return select( function(obj) { return obj.key() == key; } );
     	}
 
         public function notOfType(key:String) {
-    		var ary = reject( function(obj) { return obj.key() == key; } );
-    		return another(ary);
+    		return reject( function(obj) { return obj.key() == key; } );
     	}
 
         public function areAllOfType(key:String):Boolean {

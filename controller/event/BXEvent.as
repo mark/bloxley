@@ -115,6 +115,10 @@ package bloxley.controller.event {
     		failure = true;
     	}
 
+        public function isMilestone():Boolean {
+            return milestone;
+        }
+        
         /*****************
         *                *
         * Helper Methods *

@@ -22,9 +22,9 @@ package bloxley.view.choreography {
         
         public function run(routine:BXRoutine) {
             currentRoutine = routine;
-            currentRoutine.start();
-            
             listenFor("BXFinishAnimation", currentRoutine, advance);
+
+            currentRoutine.start();
         }
         
         public function advance(...rest) {

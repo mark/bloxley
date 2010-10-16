@@ -11,11 +11,17 @@ package bloxley.controller.event {
     	}
 
     	public function undo() {
-    		if (undos.length == 0) return;
+    	    var milestone = false;
+    	    
+    	    while (! milestone) {
+        		if (undos.length == 0) return;
 
-    		var mostRecent = undos.pop();
+        		var mostRecent = undos.pop();
 
-    		mostRecent.undo();
+        		mostRecent.undo();
+        		
+        		milestone = mostRecent.isMilestone();
+    	    }
     	}
 
     	public function postEvent(event:BXEvent) {

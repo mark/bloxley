@@ -42,7 +42,7 @@ package bloxley.model.game {
     	function BXActor(controller:BXActorController, key:String, info:Object) {
     		this.controller = controller;
 
-    		this.info = info == null ? new Object() : info;
+    		this.info = (info == null) ? new Object() : info;
     		setKey(key);
 
     		active = true;

@@ -1,13 +1,13 @@
 package bloxley.controller.phase {
 
     import bloxley.base.BXObject;
-    import bloxley.controller.game.BXController;
+    import bloxley.controller.game.BXPlayController;
     import bloxley.controller.phase.BXPhase;
     import bloxley.controller.event.BXEvent;
     
     public class BXGameLoop extends BXObject {
                 
-        var controller:BXController;
+        var gameController:BXPlayController;
         var phases:Object;
         var initialPhase:BXPhase;
 
@@ -15,14 +15,24 @@ package bloxley.controller.phase {
 
         var __currentPhase:BXPhase;
 
-        public function BXGameLoop(controller:BXController) {
-            this.controller = controller;
+        public function BXGameLoop(gameController:BXPlayController) {
+            this.gameController = gameController;
             this.phases = new Object();
             
             addPhase( new BXPhase("Win",  this, { call: "beatLevel" }) );
             addPhase( new BXPhase("Lose", this, { call: "lostLevel" }) );
         }
 
+        /*********************
+        *                    *
+        * Controller Methods *
+        *                    *
+        *********************/
+        
+        public function controller():BXPlayController {
+            return gameController;
+        }
+        
         /************************
         *                       *
         * Initial Phase Methods *
@@ -55,7 +65,7 @@ package bloxley.controller.phase {
         ***************************/
         
         public function eventToMonitor(event:BXEvent) {
-            trace("You monitored " + event);
+            later( "mainLoop" );
         }
         
         /****************
@@ -64,21 +74,25 @@ package bloxley.controller.phase {
         *               *
         ****************/
 
-        public function mainLoop() {
+        public function mainLoop(...rest) {
             if (__currentPhase == null) __currentPhase = initialPhase;
 
+            trace(__currentPhase.name);
             __currentPhase.run();
-            //var transition = __currentPhase.transition();
+            var transition = __currentPhase.transition();
+            var transitionOptions = __currentPhase.transitionOptions();
+            
             __currentPhase = __currentPhase.nextPhase();
-
-            // if (transition == BXPhase.STOP) {
-            //     // Do nothing... loop execution stops...
-            // } else if (transition == BXPhase.IMMEDIATE) {
-            //     later('mainLoop');
-            // } else {
-            //     var nextPhaseTimer = new BXTimer("Main Loop Timer", transition);
-            //     listenFor("BXTimerStop", nextPhaseTimer, mainLoop);
-            // }
+            
+            if (transition == "terminal") {
+                // Do nothing...
+            } else if (transition == "immediate") {
+                later( "mainLoop" );
+            } else if (transition == "waitForInput") {
+                controller().monitorEvents( transitionOptions );
+            } else if (transition == "waitForEvent") {
+                controller().monitorEvent();
+            }
         }
         
     }

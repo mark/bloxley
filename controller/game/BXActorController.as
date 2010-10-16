@@ -172,6 +172,10 @@ package bloxley.controller.game {
     	    return spriteForActor(actor).goto(action.newPosition, options);
     	}
 
+        public function animateSelect(actor:BXActor, action:BXSelectAction) {
+            // OVERRIDE ME!
+        }
+        
     	/************************
     	*                       *
     	* Default Event methods *

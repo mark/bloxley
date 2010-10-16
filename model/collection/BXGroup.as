@@ -85,6 +85,15 @@ package bloxley.model.collection {
     		return thatAre( function(actor) { return actor.isActive() && actor.canBePlayer(); })
     	}
 
+        /***************
+        *              *
+        * Are All Good *
+        *              *
+        ***************/
+        
+        public function areAllGood() {
+            return mustBe( function(actor) { return actor.good(); });
+        }
     }
 
 }

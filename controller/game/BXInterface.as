@@ -110,9 +110,12 @@ package bloxley.controller.game {
 
         public function hideBank(bank) {
             if (bank == null) bank = currentBank;
+            var elements = interfaceElements[bank];
 
-            for (var i = 0; i < interfaceElements[bank].length; i++) {
-                interfaceElements[bank][i].hide();
+            if (elements) {
+                for (var i = 0; i < elements.length; i++) {
+                    elements[i].hide();
+                }
             }
         }
 
