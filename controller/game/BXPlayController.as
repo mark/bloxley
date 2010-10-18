@@ -7,10 +7,11 @@ package bloxley.controller.game {
     import bloxley.model.game.BXActor;
     import bloxley.controller.event.*;
     import bloxley.controller.phase.*;
+    import bloxley.view.choreography.BXRoutine;
     
     public class BXPlayController extends BXController {
 
-        var monitoringEvent:Boolean;
+        var caughtEvents:Array;
         var eventsToMonitor:Array;
         
         var gameLoop:BXGameLoop;
@@ -19,7 +20,7 @@ package bloxley.controller.game {
             super(name, game);
             
             gameLoop = new BXGameLoop(this);
-            monitoringEvent = false;
+            caughtEvents = new Array();
             
             createPhases();
         }
@@ -80,45 +81,50 @@ package bloxley.controller.game {
         *                   *
         ********************/
         
-        public function monitorEvent() {
-            monitoringEvent = true;
+        public function startMonitoringEvents() {
+            caughtEvents = new Array();
+        }
+        
+        public function fetchEvents():Array {
+            return caughtEvents;
+        }
+        
+        public function pushEvents() {
+            gameLoop.waitForAnimations( caughtEvents );
         }
 
-        public function monitorEvents(events:Array) {
+        public function startMonitoringUserEvents(events:Array) {
             eventsToMonitor = events;
         }
         
+        public function finishMonitoringUserEvents() {
+            eventsToMonitor = null;
+        }
+        
         override public function respondTo(meth:String, args:Array = null) {
+            var isMonitoringEvent = false;
+            
             if (eventsToMonitor && eventsToMonitor.indexOf(meth) != -1) {
-                monitorEvent();
+                startMonitoringEvents();
+                isMonitoringEvent = true;
             }
 
             super.respondTo(meth, args);
             
-            // In case no event is created...
-            monitoringEvent = false;
-        }
-        
-        override public function handleEvent(milestone:Boolean, events:Array) {
-            var newEvent = new BXEvent(this, milestone);
-            
-            newEvent.handle(events);
-            
-            if (monitoringEvent) {
-                eventsToMonitor = null;
-                monitoringEvent = false;
-
-                gameLoop.eventToMonitor(newEvent);
+            if (isMonitoringEvent && caughtEvents.length > 0) {
+                finishMonitoringUserEvents();
+                pushEvents();
             }
         }
         
-        public function nothing() {
-            eventsToMonitor = null;
-            monitoringEvent = false;
-
-            gameLoop.eventToMonitor(null);
+        override public function eventSucceeded(event:BXEvent):BXRoutine {
+            var routine = super.eventSucceeded(event);
+            
+            caughtEvents.push( routine );
+            
+            return routine;
         }
-
+        
     	/*************************
     	*                        *
     	* Built-In Phase Methods *
@@ -132,7 +138,6 @@ package bloxley.controller.game {
     	
     	public function heartbeat() {
     	    // OVERRIDE ME!
-    	    nothing();
     	}
     	
     	public function didBeatLevel():Boolean {

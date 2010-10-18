@@ -3,7 +3,7 @@ package bloxley.controller.phase {
     import bloxley.base.BXObject;
     import bloxley.controller.game.BXController;
     //import bloxley.controller.phase.BXGameLoop;
-    import bloxley.controller.game.BXController;
+    import bloxley.controller.game.BXPlayController;
     
     public class BXPhase extends BXObject {
         
@@ -35,7 +35,7 @@ package bloxley.controller.phase {
         *                    *
         *********************/
 
-        public function controller():BXController {
+        public function controller():BXPlayController {
             return gameLoop.controller();
         }
 
@@ -129,6 +129,7 @@ package bloxley.controller.phase {
                 onEnter();
             }
 
+            controller().startMonitoringEvents();
             onRun();
             
             // Calculate next state:
@@ -168,7 +169,7 @@ package bloxley.controller.phase {
                 return options.after;
             }
 
-            // Terminal state
+            // Terminal state (no phase transitions specified)
             return [null, "terminal"];
         }
 

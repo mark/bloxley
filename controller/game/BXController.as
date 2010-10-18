@@ -214,13 +214,15 @@ package bloxley.controller.game {
             handleEvent(true, events);
         }
         
-        public function eventSucceeded(event:BXEvent) {
+        public function eventSucceeded(event:BXEvent):BXRoutine {
     		if (queue) queue.postEvent(event);
     		
     		var newChoreographer = choreographer();
             var routine = newChoreographer.choreographEvent(event);
             
             sequencer.add( routine );
+            
+            return routine;
         }
         
         public function previousEvent(milestone:Boolean = false):BXEvent {
