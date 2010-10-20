@@ -189,6 +189,10 @@ package bloxley.controller.phase {
             _runCount = 0;
         }
         
+        public function phaseName():String {
+            return name;
+        }
+        
     }
     
 }

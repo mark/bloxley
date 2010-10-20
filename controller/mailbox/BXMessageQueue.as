@@ -21,7 +21,7 @@ package bloxley.controller.mailbox {
         }
 
         public function nextMessage():Object {
-            return queue[0];
+            return queue.shift();
         }
 
         public function clearMessage(message:Object) {

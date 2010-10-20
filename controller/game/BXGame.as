@@ -4,13 +4,12 @@ package bloxley.controller.game {
     
     import bloxley.base.BXSystem;
     import bloxley.controller.io.*;
-    // import bloxley.controller.event.*;
     import bloxley.controller.game.*;
     import bloxley.controller.mailbox.BXMailbox;
-    // import bloxley.controller.pen.*;
     import bloxley.model.game.*;
     import bloxley.view.clock.*;
     import bloxley.view.gui.*;
+    import bloxley.util.BXInterfaceHelper;
     
     public class BXGame extends BXInterface {
 
@@ -136,6 +135,7 @@ package bloxley.controller.game {
                 var grid = new BXGrid(this, { gridSize: defaultGridSize() });
                 register( grid );
                 grid.setBoard( board() );
+                
         }
         
         public function defaultGridSize():Number {

@@ -23,6 +23,11 @@ package bloxley.base {
 
             initialized = true;
         }
+        
+        public static function screenDimensions():Array {
+            var stage = screen.getGraphics();
+            return [ stage.stageWidth, stage.stageHeight ];
+        }
     }
     
 }

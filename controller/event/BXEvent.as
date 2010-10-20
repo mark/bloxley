@@ -53,7 +53,7 @@ package bloxley.controller.event {
     		}
 
             // Uncomment the following line to get a description of each event as it occurs:
-            // trace(this);
+            // trace("\t " + (milestone ? '>' : '-') + " " + this);
 
             if (didSucceed()) {
                 //post("BXEventSucceeded", this);

@@ -20,12 +20,10 @@ package bloxley.view.gui {
         //var controller:BXController;
         var banks:Array;
 
-        // function BXGuiElement(controller:BXController, makeBlankMovieClip:Boolean) {
         public function BXGuiElement(owner:BXInterface, options:Object = null) {
             super(options);
             this.owner = owner;
             
-            // this.controller = controller;
             this.banks = new Array();
             
             hide();
@@ -60,12 +58,12 @@ package bloxley.view.gui {
         *              *
         ***************/
 
-        public function addToBank(bank:String) {
+        public function addToBank(bank:BXBank) {
             banks.push(bank);
         }
 
         public function allBanks():String {
-            return banks.join(",");
+            return "please implement BXGuiElement#allBanks"; //banks.join(",");
         }
 
         /****************

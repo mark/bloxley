@@ -1,6 +1,6 @@
 package bloxley.controller.game {
     
-    import bloxley.view.clock.BXTimer;
+    import bloxley.base.BXSystem;
     import bloxley.controller.mailbox.BXMessage;
     import bloxley.controller.pen.*;
     import bloxley.model.data.BXDirection;
@@ -8,6 +8,10 @@ package bloxley.controller.game {
     import bloxley.controller.event.*;
     import bloxley.controller.phase.*;
     import bloxley.view.choreography.BXRoutine;
+    import bloxley.view.clock.BXTimer;
+    import bloxley.view.gui.BXImage;
+    import bloxley.view.sprite.BXSprite;
+    
     
     public class BXPlayController extends BXController {
 
@@ -25,10 +29,25 @@ package bloxley.controller.game {
             createPhases();
         }
         
+        /*************************
+        *                        *
+        * Initialization Methods *
+        *                        *
+        *************************/
+        
         override public function onStart() {
             setupTimer();
             switchToPen("Play");
             gameLoop.mainLoop();
+        }
+        
+        override public function createInterface() {
+            var screen = BXSystem.screenDimensions();
+            
+            setBank("Beat Level");
+                var image = new BXImage(this, "BeatLevel", { centered: true, depth: 1 });
+                image.goto([ screen[0] * 0.5, screen[1] * 0.5 ]);
+                register( image );
         }
         
         override public function createPens() {
@@ -38,6 +57,17 @@ package bloxley.controller.game {
             var pen1 = new BXGameOverPen(this);
             pen1.setName("GameOver");
         }
+    	
+
+    	public function createPhases() {
+    	    phase("Starting Game", { call: "startGame"    }).after("User Input");
+    	    phase("User Input"                             ).after("Heartbeat",    "waitForInput", validUserActions());
+    	    phase("Heartbeat",     { call: "heartbeat"    }).after("Test For Win", "waitForEvent");
+    	    phase("Test For Win",  { call: "didBeatLevel" }).pass("Win" ).fail("Test For Lose");
+    	    phase("Test For Lose", { call: "didLoseLevel" }).pass("Lose").fail("User Input"   );
+    	    
+    	    setInitialPhase("Starting Game");
+    	}
     	
     	/****************
     	*               *
@@ -51,28 +81,12 @@ package bloxley.controller.game {
     	
     	// This contains the built in game loop, useful for Sokoban-type games
     	// But not useful for more complex kinds of games.
-    	// Override if necessary...
-
-    	public function createPhases() {
-    	    phase("Starting Game", { call: "startGame"    }).after("User Input");
-    	    phase("User Input"                             ).after("Heartbeat",    "waitForInput", validUserActions());
-    	    phase("Heartbeat",     { call: "heartbeat"    }).after("Test For Win", "waitForEvent");
-    	    phase("Test For Win",  { call: "didBeatLevel" }).pass("Win" ).fail("Test For Lose");
-    	    phase("Test For Lose", { call: "didLoseLevel" }).pass("Lose").fail("User Input"   );
-    	    
-    	    setInitialPhase("Starting Game");
-    	}
-    	
+    	// Override when necessary...
     	public function phase(name:String, options:Object = null):BXPhase {
     	    var newPhase = new BXPhase(name, gameLoop, options);
     	    gameLoop.addPhase( newPhase );
 
     	    return newPhase;
-    	}
-    	
-    	// These are the user input actions which will trigger a phase transition
-    	public function validUserActions():Array {
-    	    return [ "moveCharacter" ];
     	}
     	
         /********************
@@ -136,6 +150,11 @@ package bloxley.controller.game {
     	    selectPlayer( firstPlayer );
     	}
     	
+    	// These are the user input actions which will trigger a phase transition
+    	public function validUserActions():Array {
+    	    return [ "moveCharacter" ];
+    	}
+    	
     	public function heartbeat() {
     	    // OVERRIDE ME!
     	}
@@ -146,9 +165,7 @@ package bloxley.controller.game {
     	}
     	
     	public function beatLevel() {
-    	    trace("beatLevel");
-    	    switchToPen("GameOver");
-    	    // minorEvent( new BXEndOfLevelAction(this, true), new BXSwitchPenAction(this, "GameOver") );
+    	    minorEvent( new BXEndOfLevelAction(this, true), new BXSwitchPenAction(this, "GameOver") );
     	}
     	
     	public function didLoseLevel():Boolean {
@@ -157,8 +174,7 @@ package bloxley.controller.game {
     	}
     	
     	public function lostLevel() {
-    	    switchToPen("GameOver");
-    	    // minorEvent( new BXEndOfLevelAction(this, false), new BXSwitchPenAction(this, "GameOver") );
+    	    minorEvent( new BXEndOfLevelAction(this, false), new BXSwitchPenAction(this, "GameOver") );
     	}
     	
     	/*****************************
@@ -169,9 +185,19 @@ package bloxley.controller.game {
     	
     	public function animateBeatLevel(action:BXAction) {
     	    // OVERRIDE ME!
+    	    return showBank("Beat Level", { seconds: 0.5 });
+    	}
+    	
+    	public function animateUndoBeatLevel(action:BXAction) {
+    	    // OVERRIDE ME!
+    	    return hideBank("Beat Level");
     	}
     	
     	public function animateLostLevel(action:BXAction) {
+    	    // OVERRIDE ME!
+    	}
+    	
+    	public function animateUndoLostLevel(action:BXAction) {
     	    // OVERRIDE ME!
     	}
     	

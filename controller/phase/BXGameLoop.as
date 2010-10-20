@@ -4,6 +4,7 @@ package bloxley.controller.phase {
     import bloxley.controller.game.BXPlayController;
     import bloxley.controller.phase.BXPhase;
     import bloxley.controller.event.BXEvent;
+    import bloxley.controller.event.BXChangePhaseAction;
     
     public class BXGameLoop extends BXObject {
                 
@@ -15,11 +16,13 @@ package bloxley.controller.phase {
 
         var __currentPhase:BXPhase;
         var waitCount:int;
+        var lastTransitionType:Array;
 
         public function BXGameLoop(gameController:BXPlayController) {
             this.gameController = gameController;
             this.phases = new Object();
             this.waitCount = 0;
+            this.lastTransitionType = [ "immediate", null ];
             
             addPhase( new BXPhase("Win",  this, { call: "beatLevel" }) );
             addPhase( new BXPhase("Lose", this, { call: "lostLevel" }) );
@@ -60,6 +63,14 @@ package bloxley.controller.phase {
             return phases[name];
         }
 
+        public function currentPhase():BXPhase {
+            return __currentPhase;
+        }
+        
+        public function switchToPhase(newPhase:BXPhase) {
+            __currentPhase = newPhase;
+        }
+        
         /***************************
         *                          *
         * Monitoring Event Methods *
@@ -101,14 +112,26 @@ package bloxley.controller.phase {
             
             if (__currentPhase == null) __currentPhase = initialPhase;
 
-            trace(__currentPhase.name);
-            __currentPhase.run();
+            // Uncomment the next line to track the game loop:
+            // trace(__currentPhase.name);
             
+            __currentPhase.run();
+
+            var nextPhase         = __currentPhase.nextPhase();
             var transition        = __currentPhase.transition();
             var transitionOptions = __currentPhase.transitionOptions();
             
-            __currentPhase = __currentPhase.nextPhase();
+            lastTransitionType = [ transition, transitionOptions ];
             
+            
+            if (__currentPhase != nextPhase) {
+                controller().minorEvent( new BXChangePhaseAction(this, nextPhase, transition, transitionOptions) );
+            } else {
+                transitionPhase("immediate", null);
+            }
+        }
+        
+        public function transitionPhase(transition:String, transitionOptions) {
             if (transition == "terminal") {
                 // Do nothing, game has ended...
             } else if (transition == "immediate") {
@@ -119,6 +142,10 @@ package bloxley.controller.phase {
                 // Current phase has already ran, so we can get the events that need to be monitored...
                 controller().pushEvents();
             }
+        }
+        
+        public function lastTransition():Array {
+            return lastTransitionType;
         }
         
     }

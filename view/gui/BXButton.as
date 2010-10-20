@@ -16,7 +16,7 @@ package bloxley.view.gui {
         
         var owner:Object;
 
-        public function BXButton(owner, method, objects, options) {
+        public function BXButton(owner, method, objects, options:Object = null) {
             this.owner = owner;
             this.method = method;
 

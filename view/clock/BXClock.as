@@ -2,6 +2,7 @@ package bloxley.view.clock {
 
     import bloxley.base.BXObject;
     import bloxley.view.clock.*;
+    import bloxley.controller.mailbox.BXMailbox;
     
     import flash.utils.getTimer;
     import flash.display.Stage;
@@ -37,8 +38,6 @@ package bloxley.view.clock {
             this.currentTime = zeroTime;        
             this.timers = new Object();
             this.signals = new BXSignalQueue();
-
-            // post("BXStartOfFrame", now());
         }
 
         function setupRoot(stage:Stage) {
@@ -58,9 +57,12 @@ package bloxley.view.clock {
         function onEnterFrame(event:Event) {
             this.currentTime = getTimer();
 
+            // Prime the pump...
             post("BXStartOfFrame", now());
-
             signals.resolveSignals( now() );
+            
+            // Start the reactor...
+            BXMailbox.mailbox.resolveMessages();
         }
 
         /****************
@@ -68,13 +70,6 @@ package bloxley.view.clock {
         * Timer Methods *
         *               *
         ****************/
-
-        // function addTimer(name:String, length:Number):BXTimer {
-        //     var newTimer = new BXTimer(name, length);
-        //     timers[name] = newTimer;
-        //     
-        //     return newTimer;
-        // }
 
         function addTimer(timer:BXTimer) {
             timers[timer.name] = timer;

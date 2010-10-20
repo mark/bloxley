@@ -9,13 +9,11 @@ package bloxley.view.gui {
         var stage:Stage;
         
         public function BXScreen(stage:Stage) {
-            super(null, new Object());
-            
             this.stage = stage;
+
+            super(null, { parent: this, depth: 0 });
         }
-        
-        override public function generateGraphics(clip:String, parent, depth:int, hidden:Boolean) { return null; }
-        
+                
         override public function getGraphics() {
             return stage;
         }

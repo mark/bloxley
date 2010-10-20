@@ -27,7 +27,7 @@ package bloxley.controller.mailbox {
         *                           *
         ****************************/
 
-        function resolveMessages() {
+        public function resolveMessages() {
             while (messageQueue.anyPendingMessages()) {
                 var nextMessage = messageQueue.nextMessage();
 
@@ -36,8 +36,6 @@ package bloxley.controller.mailbox {
                 } else if (nextMessage is BXDelayedCall) {
                     nextMessage.call();
                 }
-
-                messageQueue.clearMessage( nextMessage );
             }
         }
 
@@ -68,13 +66,7 @@ package bloxley.controller.mailbox {
         }
 
         public function postMessage(message) {
-            var shouldStartResolution = ! messageQueue.anyPendingMessages() && ! holdResolution;
-
             messageQueue.addMessage(message);
-
-            if (shouldStartResolution) { // if not currently resolving messages...
-                resolveMessages();
-            }
         }
 
         /*****************************************

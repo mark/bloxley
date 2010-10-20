@@ -30,9 +30,9 @@ package bloxley.util {
     	    return new BXButton("drawPatch", patchKey, { group: "PatchPen" });
     	}
         
-        function buttonForActorKey(options):BXButton {
-    	    return new BXButton("addActor", key(options), { onDown: true });
-    	}
+        // function buttonForActorKey(options):BXButton {
+    	//     return new BXButton("addActor", key(options), { onDown: true });
+    	// }
     	
     }
 	

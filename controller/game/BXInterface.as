@@ -8,13 +8,15 @@ package bloxley.controller.game {
         var interfaceId:Number;
         var allInterfaceElements:Array;
     	var interfaceElements:Object; // *Named* user interface elements ...
-        var currentBank:String;
+    	var interfaceBanks:Object;
+        var currentBank:BXBank;
         
         // var interfaceLoader:BXInterfaceLoader;
 
 
         public function BXInterface() {
         	this.interfaceElements = new Object();
+        	this.interfaceBanks = new Object();
             this.allInterfaceElements = new Array();
 
     		createInterface();
@@ -66,19 +68,16 @@ package bloxley.controller.game {
 
     	// Interface banks
 
-    	public function setBank(bank:String) {
-    	    if (interfaceElements[bank] == null)
-    	        interfaceElements[bank] = new Array();
+    	public function setBank(bankName:String) {
+    	    if (interfaceElements[bankName] == null)
+    	        interfaceElements[bankName] = new BXBank(bankName);
 
-    	    currentBank = bank;
+    	    currentBank = interfaceElements[bankName];
     	}
 
-    	public function register(element) {
+    	public function register(element:BXGuiElement) {
     	    if (currentBank) {
-    	        if (interfaceElements[currentBank]) {
-    		        interfaceElements[currentBank].push(element);
-		        }
-		        
+		        currentBank.addGuiElement(element);
 		        element.addToBank(currentBank);
     	    }
 
@@ -108,27 +107,14 @@ package bloxley.controller.game {
     		return null;
     	}
 
-        public function hideBank(bank) {
-            if (bank == null) bank = currentBank;
-            var elements = interfaceElements[bank];
-
-            if (elements) {
-                for (var i = 0; i < elements.length; i++) {
-                    elements[i].hide();
-                }
-            }
+        public function hideBank(bankName = null, options = null) {
+            var bank = (bankName == null) ? currentBank : interfaceElements[bankName];
+            if (bank) return bank.hide(options);
         }
 
-        public function showBank(bank) {
-            if (bank == null) bank = currentBank;
-            
-            var elements = interfaceElements[bank];
-            
-            if (elements) {
-                for (var i = 0; i < elements.length; i++) {
-                    interfaceElements[bank][i].show();
-                }
-            }
+        public function showBank(bankName = null, options = null) {
+            var bank = (bankName == null) ? currentBank : interfaceElements[bankName];
+            if (bank) return bank.show(options);
         }
 
         /* 

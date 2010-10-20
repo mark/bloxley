@@ -16,11 +16,12 @@ package bloxley.controller.event {
     	}
 
     	override public function act() {
-    	    oldPen = controller.pen().name;
+    	    oldPen = controller.pen().name();
     	    controller.switchToPen(newPen);
     	}
 
     	override public function undo() {
+    	    trace("switching back to pen " + oldPen)
             controller.switchToPen(oldPen);
     	}
 
