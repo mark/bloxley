@@ -17,7 +17,8 @@ package bloxley.controller.phase {
         var __currentPhase:BXPhase;
         var waitCount:int;
         var lastTransitionType:Array;
-
+        var pendingTransitionType:Array;
+        
         public function BXGameLoop(gameController:BXPlayController) {
             this.gameController = gameController;
             this.phases = new Object();
@@ -141,6 +142,16 @@ package bloxley.controller.phase {
             } else if (transition == "waitForEvent") {
                 // Current phase has already ran, so we can get the events that need to be monitored...
                 controller().pushEvents();
+            }
+        }
+        
+        public function holdTransitionPhase(transition:String, transitionOptions) {
+            pendingTransitionType = [ transition, transitionOptions ];
+        }
+        
+        public function releaseTransitionPhase() {
+            if (pendingTransitionType) {
+                transitionPhase( pendingTransitionType[0], pendingTransitionType[1] );
             }
         }
         

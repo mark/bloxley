@@ -156,15 +156,15 @@ package bloxley.controller.pen {
             // OVERRIDE THIS!
         }
 
-        public function arrow(direction:BXDirection) {
+        public function arrow(direction:BXDirection, shift:Boolean, alt:Boolean, ctrl:Boolean) {
             // OVERRIDE THIS!
         }
 
-        public function press_space() {        
+        public function press_space(shift:Boolean, alt:Boolean, ctrl:Boolean) {        
             // OVERRIDE THIS!
         }
 
-        public function press_cmd() {
+        public function press_cmd(shift:Boolean, alt:Boolean, ctrl:Boolean) {
             // OVERRIDE THIS!
         }
 
@@ -174,9 +174,9 @@ package bloxley.controller.pen {
         *              *
         ***************/
 
-        public function press_Zz(key:String, shift:Boolean, alt:Boolean, ctrl:Boolean) {
+        public function press_delete(shift:Boolean, alt:Boolean, ctrl:Boolean) {
             var meth = shift ? "reset" : "undo";
-            if (ctrl) controller.respondTo(meth);
+            controller.respondTo(meth);
         }
 
         /****************************************
@@ -197,16 +197,21 @@ package bloxley.controller.pen {
             // For non-character keys
 
             if (keyCode > 36 && keyCode < 41) {
-                arrow(BXDirection.getDirection(keyCode));
+                arrow(BXDirection.getDirection(keyCode), event.shiftKey, event.altKey, event.ctrlKey);
             }
 
             if (keyCode == 32) {
-                press_space();
+                press_space(event.shiftKey, event.altKey, event.ctrlKey);
             }
 
             if (keyCode == 17) {
-                press_cmd();
+                press_cmd(event.shiftKey, event.altKey, event.ctrlKey);
             }
+            
+            if (keyCode == 8) {
+                press_delete(event.shiftKey, event.altKey, event.ctrlKey);
+            }
+            
         }
 
         /*

@@ -139,6 +139,24 @@ package bloxley.controller.game {
             return routine;
         }
         
+        /***************
+        *              *
+        * Undo Methods *
+        *              *
+        ***************/
+        
+        override public function undo() {
+            super.undo();
+            startMonitoringEvents();
+            gameLoop.releaseTransitionPhase();
+        }
+
+        override public function reset() {
+            super.reset();
+            startMonitoringEvents();
+            gameLoop.releaseTransitionPhase();
+        }
+        
     	/*************************
     	*                        *
     	* Built-In Phase Methods *

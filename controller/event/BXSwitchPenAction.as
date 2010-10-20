@@ -21,7 +21,6 @@ package bloxley.controller.event {
     	}
 
     	override public function undo() {
-    	    trace("switching back to pen " + oldPen)
             controller.switchToPen(oldPen);
     	}
 

@@ -30,7 +30,7 @@ package bloxley.controller.event {
 
     	override public function undo() {
             gameLoop.switchToPhase(oldPhase);
-    	    gameLoop.transitionPhase( oldTransition[0], oldTransition[1] );
+    	    gameLoop.holdTransitionPhase( oldTransition[0], oldTransition[1] );
     	}
 
         override public function description():String {

@@ -20,13 +20,14 @@ package bloxley.view.gui {
         //var controller:BXController;
         var banks:Array;
 
-        public function BXGuiElement(owner:BXInterface, options:Object = null) {
+        public function BXGuiElement(owner:BXInterface, opts:Object = null) {
+            var options = copyOptions(opts);
+            options.visible = false;
+                
             super(options);
             this.owner = owner;
             
             this.banks = new Array();
-            
-            hide();
         }
 
         /***************

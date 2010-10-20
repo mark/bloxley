@@ -17,11 +17,11 @@ package bloxley.controller.pen {
             }
         }
 
-        override public function arrow(direction:BXDirection) {
+        override public function arrow(direction:BXDirection, shift:Boolean, alt:Boolean, ctrl:Boolean) {
             controller.respondTo("moveCharacter", [ direction ]);
         }
         
-        override public function press_space() {
+        override public function press_space(shift:Boolean, alt:Boolean, ctrl:Boolean) {
             controller.respondTo("selectNextPlayer");
         }
     }

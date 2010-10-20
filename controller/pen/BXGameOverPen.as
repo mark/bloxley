@@ -9,11 +9,11 @@ package bloxley.controller.pen {
             super(controller);
         }
         
-        public function press_Rr(key, shift, alt, ctrl) {
+        public function press_Rr(key, shift:Boolean, alt:Boolean, ctrl:Boolean) {
             controller.respondTo("reset");
         }
 
-        override public function press_space() {
+        override public function press_space(shift:Boolean, alt:Boolean, ctrl:Boolean) {
             // controller.respondTo( "nextLevel" );
         }
     }
