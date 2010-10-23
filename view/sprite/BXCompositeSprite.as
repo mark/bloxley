@@ -62,6 +62,16 @@ package bloxley.view.sprite {
             }
         }
 
+        /****************
+        *               *
+        * Layer Methods *
+        *               *
+        ****************/
+        
+        public function swapLayers(first:int, second:int) {
+            getGraphics().swapChildrenAt(first, second);
+        }
+        
         /*********************
         *                    *
         * Main Layer Methods *

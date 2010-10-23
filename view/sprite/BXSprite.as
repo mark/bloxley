@@ -18,11 +18,13 @@ package bloxley.view.sprite {
         static var ValidBlends = { x: "x", y: "y", rotation: "rotation", width: "width", height: "height", fade: "fade",
                                    x_y: ["x", "y"], w_h: ["width", "height"], dx_dy: ["dx", "dy"] };
 
-        static var VisualAttributes = { x: "x", y: "y", rotation: "rotation", fade: "alpha", width: "width", height: "height" };
+        static var VisualAttributes  = { x: "x", y: "y", rotation: "rotation", fade: "alpha", width: "width", height: "height",
+                                         dx: "dx", dx: "dy" };
 
         // Instance Variables
 
         var graphics;  // The movie clip itself
+        var virtual; // Keeps track of virtual visual attributes
         var _frame:Number;       // The frame the clip is currently at
 
         var animations:Array;    // The animations that this sprite is currently involved in...
@@ -52,8 +54,8 @@ package bloxley.view.sprite {
             this.animations = new Array();
 
             this.graphics = generateGraphics(clip, options.parent, options.depth, options.visible === false);
-
-    		this.updates = new BXSpriteChange(this);
+            this.virtual  = { dx: 0.0, dy: 0.0 };
+    		this.updates  = new BXSpriteChange(this);
         }
 
         public function destroy() {
@@ -109,8 +111,14 @@ package bloxley.view.sprite {
             return graphics;
         }
 
+        public function getVirtual() {
+            return virtual;
+        }
+        
         public function get(method) {
-            return graphics[VisualAttributes[method]]
+            var attr = VisualAttributes[method];
+
+            return graphics.hasOwnProperty(attr) ? graphics[attr] : virtual[attr];
         }
 
         public function updated() {
