@@ -200,18 +200,20 @@ package bloxley.controller.game {
             return new BXChoreographer();
         }
         
-        public function handleEvent(milestone:Boolean, events:Array) {
+        public function handleEvent(milestone:Boolean, events:Array):BXEvent {
             var newEvent = new BXEvent(this, milestone);
             
             newEvent.handle(events);
+            
+            return newEvent;
         }
         
-        public function minorEvent(...events) {
-            handleEvent(false, events);
+        public function minorEvent(...events):BXEvent {
+            return handleEvent(false, events);
         }
         
-        public function event(...events) {
-            handleEvent(true, events);
+        public function event(...events):BXEvent {
+            return handleEvent(true, events);
         }
         
         public function eventSucceeded(event:BXEvent):BXRoutine {

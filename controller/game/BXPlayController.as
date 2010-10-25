@@ -89,6 +89,10 @@ package bloxley.controller.game {
     	    return newPhase;
     	}
     	
+    	public function loop():BXGameLoop {
+    	    return gameLoop;
+    	}
+    	
         /********************
         *                   *
         * Monitoring Events *

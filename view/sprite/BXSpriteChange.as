@@ -24,7 +24,7 @@ package bloxley.view.sprite {
         }
 
         public function change(method, value) {
-            trace("\t" + sprite + "." + method + " -> " + value);
+            // trace("\t" + sprite + "." + method + " -> " + value);
             changes[method] = value;
 
             sprite.updated();

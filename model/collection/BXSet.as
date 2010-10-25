@@ -267,6 +267,24 @@ package bloxley.model.collection {
     		return (length == 1) && (theFirst() == obj);
     	}
 
+        /*****************
+        *                *
+        * Random Methods *
+        *                *
+        *****************/
+        
+        public function random() {
+            var index = Math.floor(Math.random() * length);
+            var c = 0;
+            
+            for (var k in hash) {
+                if (c == index)
+                    return hash[k];
+                else
+                    c++;
+            }
+        }
+        
     	/******************
     	*                 *
     	* Utility methods *

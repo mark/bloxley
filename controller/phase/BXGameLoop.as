@@ -27,6 +27,9 @@ package bloxley.controller.phase {
             
             addPhase( new BXPhase("Win",  this, { call: "beatLevel" }) );
             addPhase( new BXPhase("Lose", this, { call: "lostLevel" }) );
+            
+            // For delayed phase transitions...
+            listenFor("BXGameLoopRepeat", this, mainLoop);
         }
 
         /*********************
@@ -127,8 +130,8 @@ package bloxley.controller.phase {
             
             if (__currentPhase != nextPhase) {
                 controller().minorEvent( new BXChangePhaseAction(this, nextPhase, transition, transitionOptions) );
-            } else {
-                transitionPhase("immediate", null);
+            } else if (transition) {
+                transitionPhase(transition, transitionOptions);
             }
         }
         
@@ -142,6 +145,9 @@ package bloxley.controller.phase {
             } else if (transition == "waitForEvent") {
                 // Current phase has already ran, so we can get the events that need to be monitored...
                 controller().pushEvents();
+            } else if (transition == "delay") {
+                // Will trigger the state transition after transitionOptions seconds..
+                postLater("BXGameLoopRepeat", transitionOptions);
             }
         }
         

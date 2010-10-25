@@ -115,6 +115,9 @@ package bloxley.controller.game {
 
         public function spriteForActor(actor:BXActor):BXSprite {
             // Note that this might return null, if one does not exist...
+            if (sprites[actor] == null) {
+                trace("No sprite for " + actor);
+            }
             return sprites[ actor ];
         }
 
