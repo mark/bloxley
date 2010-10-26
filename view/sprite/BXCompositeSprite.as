@@ -27,7 +27,7 @@ package bloxley.view.sprite {
             options.parent = this;
 
             var newSprite   = new BXSprite(clip, options);
-            elements[depth] = newSprite;
+            elements[options.depth] = newSprite;
 
             if (mainLayer == null) mainLayer = newSprite;
 
@@ -41,7 +41,7 @@ package bloxley.view.sprite {
  
             var newSprite   = new BXCompositeSprite(options);
             
-            elements[depth] = newSprite;
+            elements[options.depth] = newSprite;
 
             if (mainLayer == null) mainLayer = newSprite;
 
@@ -70,8 +70,15 @@ package bloxley.view.sprite {
         
         public function swapLayers(first:int, second:int) {
             getGraphics().swapChildrenAt(first, second);
+            
+            var temp = elements[first];
+            elements[first] = elements[second];
+            elements[second] = temp;
         }
         
+        public function print() {
+            trace("elements = " + elements);
+        }
         /*********************
         *                    *
         * Main Layer Methods *

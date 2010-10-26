@@ -9,7 +9,7 @@ package bloxley.controller.event {
     	var _direction:BXDirection;
     	var steps:Number;
 
-    	var oldPosition:BXPatch;
+    	public var oldPosition:BXPatch;
     	public var newPosition:BXPatch;
 
     	public function BXMoveAction(actor:BXActor, _direction:BXDirection, steps:Number = NaN) {

@@ -104,7 +104,7 @@ package bloxley.model.data {
     	*                 *
     	******************/
 
-    	function toString():String {
+    	public function toString():String {
     	    if (this.equals(North)) return "North";
     	    if (this.equals(South)) return "South";
     	    if (this.equals(East))  return "East";

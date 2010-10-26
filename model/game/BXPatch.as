@@ -150,6 +150,10 @@ package bloxley.model.game {
     	public function isA(testKey:String):Boolean {
     		return key() == testKey;
     	}
+    	
+    	public function isntA(testKey:String):Boolean {
+    	    return ! isA(testKey);
+    	}
 
     	public function get(infoKey:String) {
     		return info[infoKey];

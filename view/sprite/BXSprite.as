@@ -19,7 +19,7 @@ package bloxley.view.sprite {
                                    x_y: ["x", "y"], w_h: ["width", "height"], dx_dy: ["dx", "dy"] };
 
         static var VisualAttributes  = { x: "x", y: "y", rotation: "rotation", fade: "alpha", width: "width", height: "height",
-                                         dx: "dx", dx: "dy" };
+                                         dx: "dx", dy: "dy" };
 
         // Instance Variables
 
@@ -117,7 +117,7 @@ package bloxley.view.sprite {
         
         public function get(method) {
             var attr = VisualAttributes[method];
-
+            
             return graphics.hasOwnProperty(attr) ? graphics[attr] : virtual[attr];
         }
 

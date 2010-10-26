@@ -106,11 +106,11 @@ package bloxley.view.choreography {
         *                       *
         ************************/
 
-        public function serialChoreography(cause:BXAnimation, effect:BXAnimation) {
+        public function serialChoreography(cause:BXSchedulable, effect:BXSchedulable) {
             routine.sequence(cause, effect);
         }
 
-        public function parallelChoreography(cause:BXAnimation, effect:BXAnimation) {
+        public function parallelChoreography(cause:BXSchedulable, effect:BXSchedulable) {
             routine.parallel(cause, effect);
         }
 

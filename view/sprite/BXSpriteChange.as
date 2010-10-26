@@ -24,7 +24,6 @@ package bloxley.view.sprite {
         }
 
         public function change(method, value) {
-            // trace("\t" + sprite + "." + method + " -> " + value);
             changes[method] = value;
 
             sprite.updated();
@@ -40,12 +39,8 @@ package bloxley.view.sprite {
             }    
 
             if (changes.dx != null) {
-                clip.x = realX + changes.dx;
+                clip.x  = realX + changes.dx;
                 virt.dx = changes.dx;
-                trace("clip.x = " + clip.x);
-                trace("realX = " + realX);
-                trace("changes.dx = " + changes.dx);
-                trace("")
             }
 
             if (changes.y != null) {
@@ -54,7 +49,7 @@ package bloxley.view.sprite {
             }
 
             if (changes.dy != null) {
-                clip.y = realY + changes.dy;
+                clip.y  = realY + changes.dy;
                 virt.dy = changes.dy;
             }
 
