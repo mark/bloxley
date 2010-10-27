@@ -4,7 +4,7 @@ package bloxley.controller.game {
     
     import bloxley.base.BXObject;
     import bloxley.model.game.*;
-    import bloxley.controller.event.BXAction;
+    import bloxley.controller.event.*;
     import bloxley.controller.game.*;
     import bloxley.controller.io.BXTile;
     import bloxley.controller.io.BXTileLibrary;
@@ -107,12 +107,20 @@ package bloxley.controller.game {
         // Set it to the correct clip and frame
         function displaySprite(patch:BXPatch, sprite:BXCompositeSprite) {
             sprite.addSpriteLayer( graphicsName(patch) );
-            sprite.frame( frameName(patch) );
+
+            var frame = frameName(patch);
+            
+            if (frame)
+                sprite.frame( frameName(patch) );
         }
 
         function resizeSprite(patch:BXPatch, sprite:BXSprite) {
             // Resize the sprite to the current screen size...
-            sprite.resize([ 1.0, 1.0 ]);
+            if (sprite is BXCompositeSprite) {
+                // (sprite as BXCompositeSprite).layer(0).resize([ 1.0, 1.0 ]);
+            } else {
+                sprite.resize([ 1.0, 1.0 ]);
+            }
         }
         
     	public function initializeSprite(patch:BXPatch, sprite:BXSprite) { 
@@ -141,6 +149,16 @@ package bloxley.controller.game {
     	public function canExit(action, source:BXActor, target:BXPatch) {
     		action.succeed();
     	}
+        
+        /****************************
+        *                           *
+        * Default Animation Methods *
+        *                           *
+        ****************************/
+        
+        public function animatePatchChange(patch:BXPatch, action:BXPatchChangeAction) {
+            return spriteForPatch(patch).frame(action.newKey);
+        }
         
     	/*****************
     	*                *

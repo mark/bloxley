@@ -7,26 +7,30 @@ package bloxley.controller.event {
     public class BXMoveAction extends BXBehavior {
 
     	var _direction:BXDirection;
-    	var steps:Number;
+    	var _steps:Number;
 
     	public var oldPosition:BXPatch;
     	public var newPosition:BXPatch;
 
-    	public function BXMoveAction(actor:BXActor, _direction:BXDirection, steps:Number = NaN) {
+    	public function BXMoveAction(actor:BXActor, _direction:BXDirection, _steps:Number = NaN) {
     		super(actor);
     		setKey("Move");
 
     		this._direction = _direction;
-    		this.steps = isNaN(steps) ? 1 : steps;
+    		this._steps = isNaN(_steps) ? 1 : _steps;
     	}
 
         public function direction():BXDirection {
             return _direction;
         }
         
+        public function steps():int {
+            return _steps;
+        }
+
     	override public function act() {
     		oldPosition = actor().location();
-    		newPosition = oldPosition.inDirection(_direction, steps);
+    		newPosition = oldPosition.inDirection(_direction, _steps);
 
     		actor().placeAt(newPosition);
     	}
@@ -34,10 +38,6 @@ package bloxley.controller.event {
     	override public function undo() {
     		actor().placeAt(oldPosition);
     	}
-
-        override public function animateUndo() {
-            actor().sprite().goto(oldPosition);
-        }
 
         override public function description():String {
             return key() + "<" + actor().key() + ">";

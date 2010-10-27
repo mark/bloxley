@@ -15,7 +15,7 @@ package bloxley.controller.pen {
 
         var allowUndos:Boolean; // Do the normal keys for undo work?
 
-        var controller:BXController;
+        public var controller:BXController;
 
         var penName:String; // How thehe controller refers to this pen
 

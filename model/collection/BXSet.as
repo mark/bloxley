@@ -141,7 +141,7 @@ package bloxley.model.collection {
     		var newSet = another();
 
     		for (var k in hash) {
-    			if (_call(meth, [ hash[k] ])) {
+    			if (! _call(meth, [ hash[k] ])) {
     				newSet.insert(hash[k]);
     			}
     		}

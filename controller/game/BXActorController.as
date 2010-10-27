@@ -164,19 +164,29 @@ package bloxley.controller.game {
         *                    *
         *********************/
 
-        public function defaultSpeed(...args):Number {
+        public function defaultSpeed():Number {
             return 8.0;
         }
         
-        public function animateMove(actor:BXActor, action:BXMoveAction, instant:Boolean = false) {
-            var options = new Object();
-            options.speed = instant ? NaN : defaultSpeed();
-            
-    	    return spriteForActor(actor).goto(action.newPosition, options);
+        public function animateMove(actor:BXActor, action:BXMoveAction) {
+    	    return spriteForActor(actor).goto(action.newPosition, { speed: defaultSpeed() });
     	}
+
+        public function animateUndoMove(actor:BXActor, action:BXMoveAction) {
+    	    return spriteForActor(actor).goto(action.oldPosition, { instant: true });
+        }
+
 
         public function animateSelect(actor:BXActor, action:BXSelectAction) {
             // OVERRIDE ME!
+        }
+        
+        public function animateDisable(actor:BXActor, action:BXDisableAction) {
+            return spriteForActor(actor).hide({ seconds: 0.5 });
+        }
+        
+        public function animateUndoDisable(actor:BXActor, action:BXDisableAction) {
+            return spriteForActor(actor).show();
         }
         
     	/************************

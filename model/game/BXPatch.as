@@ -144,7 +144,6 @@ package bloxley.model.game {
 
     	public function setKey(newKey:String) {
     		info.key = newKey;
-    		// setFrame();
     	}
 
     	public function isA(testKey:String):Boolean {

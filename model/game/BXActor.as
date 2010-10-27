@@ -52,7 +52,7 @@ package bloxley.model.game {
 
     	// Get rid of this object
     	function destroy() {
-    		disable(true);
+    		disable();
     		gameboard.removeActor(this);
     	}
 
@@ -137,14 +137,12 @@ package bloxley.model.game {
 
     	public function enable() {
     		active = true;
-    		sprite().show();
+    		region = null; // This will force evaluation next time it is required...
     	}
 
-    	public function disable(hide:Boolean) {
+    	public function disable() {
     		active = false;
-    		region = null;
-
-    		if (hide) sprite().hide();
+    		region = new BXRegion(); // Left empty...
     	}
 
     	public function isActive() {

@@ -28,6 +28,11 @@ package bloxley.controller.event {
     	    return actorController["animate" + key()](actor(), this);
     	}
 
+    	override public function animateUndo() {
+    	    var actorController = actor().actorController();
+    	    return actorController["animateUndo" + key()](actor(), this);
+    	}
+
     	/***************************
     	*                          *
     	* Event Resolution methods *
