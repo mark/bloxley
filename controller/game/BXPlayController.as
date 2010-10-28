@@ -38,16 +38,7 @@ package bloxley.controller.game {
         override public function onStart() {
             setupTimer();
             switchToPen("Play");
-            gameLoop.mainLoop();
-        }
-        
-        override public function createInterface() {
-            var screen = BXSystem.screenDimensions();
-            
-            setBank("Beat Level");
-                var image = new BXImage(this, "BeatLevel", { centered: true, depth: 1 });
-                image.goto([ screen[0] * 0.5, screen[1] * 0.5 ]);
-                register( image );
+            gameLoop.run();
         }
         
         override public function createPens() {
@@ -207,12 +198,10 @@ package bloxley.controller.game {
     	
     	public function animateBeatLevel(action:BXAction) {
     	    // OVERRIDE ME!
-    	    return showBank("Beat Level", { seconds: 0.5 });
     	}
     	
     	public function animateUndoBeatLevel(action:BXAction) {
     	    // OVERRIDE ME!
-    	    return hideBank("Beat Level");
     	}
     	
     	public function animateLostLevel(action:BXAction) {

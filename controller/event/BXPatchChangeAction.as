@@ -31,6 +31,11 @@ package bloxley.controller.event {
             var controller = patch.patchController();
             return controller.animatePatchChange(patch, this);
         }
+
+        override public function animateUndo() {
+            var controller = patch.patchController();
+            return controller.animateUndoPatchChange(patch, this);
+        }
     }
 
 }

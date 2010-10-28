@@ -29,7 +29,7 @@ package bloxley.controller.phase {
             addPhase( new BXPhase("Lose", this, { call: "lostLevel" }) );
             
             // For delayed phase transitions...
-            listenFor("BXGameLoopRepeat", this, mainLoop);
+            listenFor("BXGameLoopRepeat", this, run);
         }
 
         /*********************
@@ -85,7 +85,7 @@ package bloxley.controller.phase {
             waitCount = 0;
             
             if (animations.length == 0) {
-                later( "mainLoop" );
+                later( "run" );
             } else {
                 for (var i = 0; i < animations.length; i++) {
                     if (! animations[i].isFinished()) {
@@ -100,7 +100,7 @@ package bloxley.controller.phase {
             waitCount--;
             
             if (waitCount == 0) {
-                later( "mainLoop" );
+                later( "run" );
             }
         }
         
@@ -110,7 +110,7 @@ package bloxley.controller.phase {
         *               *
         ****************/
 
-        public function mainLoop(...rest) {
+        public function run(...rest) {
             // In case we were from a previous possible transition...
             controller().finishMonitoringUserEvents();
             
@@ -139,7 +139,7 @@ package bloxley.controller.phase {
             if (transition == "terminal") {
                 // Do nothing, game has ended...
             } else if (transition == "immediate") {
-                later( "mainLoop" );
+                later( "run" );
             } else if (transition == "waitForInput") {
                 controller().startMonitoringUserEvents( transitionOptions );
             } else if (transition == "waitForEvent") {

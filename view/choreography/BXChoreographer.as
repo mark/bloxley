@@ -88,13 +88,13 @@ package bloxley.view.choreography {
         *                       *
         ************************/
 
-        public function arrangeMoveCausedByMove(cause:BXBehavior, effect:BXBehavior):String {
+        public function arrangeMoveCausedByMove(cause:BXMoveAction, effect:BXMoveAction):String {
             return (cause.actor() == effect.actor()) ? "serial" : "parallel";
         }
 
-        // public function arrangeDisableCausedByMove(move:BXMoveAction, disable:BXDisableAction) {
-        //     return (move.actor() == disable.actor) ? "serial" : "parallel";
-        // }
+        public function arrangeDisableCausedByMove(move:BXMoveAction, disable:BXDisableAction) {
+            return (move.actor() == disable.actor()) ? "serial" : "parallel";
+        }
 
         public function arrangeActions(cause:BXAction, effect:BXAction):String {
             return "parallel";
