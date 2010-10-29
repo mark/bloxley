@@ -3,7 +3,7 @@ package bloxley.controller.event {
     import bloxley.base.BXObject;
     import bloxley.controller.event.*;
     import bloxley.view.animation.*;
-    import bloxley.view.choreography.BXParallelRoutine;
+    import bloxley.view.choreography.*;
 
     public class BXAction extends BXObject {
 
@@ -260,6 +260,7 @@ package bloxley.controller.event {
             undo();
 
             if (animated) {
+                _animation.finish();
                 animateUndo();
             }
         }

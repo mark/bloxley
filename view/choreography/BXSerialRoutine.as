@@ -10,8 +10,10 @@ package bloxley.view.choreography {
 
     public class BXSerialRoutine extends BXRoutine {
 
-        public function BXSerialRoutine() {
+        public function BXSerialRoutine(animations:Array = null) {
             super();
+            
+            if (animations != null) addAnimations(animations);
         }
 
         public function addAnimations(animations:Array) {

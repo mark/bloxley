@@ -160,7 +160,7 @@ package bloxley.controller.pen {
             // OVERRIDE THIS!
         }
 
-        public function press_space(shift:Boolean, alt:Boolean, ctrl:Boolean) {        
+        public function press_space(shift:Boolean, alt:Boolean, ctrl:Boolean) {
             // OVERRIDE THIS!
         }
 

@@ -23,6 +23,7 @@ package bloxley.view.animation {
             this.sprite     = sprite;
             this.sequence   = sequence;
 
+            this.wait       = options.wait;
             this.duration   = options.seconds;
             this.rate       = options.speed;
             this.instant    = (isNaN(options.speed) && isNaN(options.seconds)) || changes() == 0;

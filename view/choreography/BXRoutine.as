@@ -16,7 +16,7 @@ package bloxley.view.choreography {
             this.animationChannel = new BXChannel();
             this.waitingFor = new Dictionary();
             this._options = options;
-
+            
             // So we know when animations finish...
             listenFor("BXChannelAnimationFinished", animationChannel, tryStartingAnimations);
             listenFor("BXChannelClear", animationChannel, finish);
@@ -46,6 +46,18 @@ package bloxley.view.choreography {
             }
         }
 
+        /********************
+        *                   *
+        * Finishing Methods *
+        *                   *
+        ********************/
+        
+        overide public function cleanup() {
+            animationChannel.activeAnimations().each(function(anim) {
+                anim.finish();
+            });
+        }
+        
         /****************************
         *                           *
         * Animation Channel Methods *
@@ -63,6 +75,8 @@ package bloxley.view.choreography {
         *******************/
 
         public function tryStartingAnimations(...rest) {
+            if (isFinished() || ! isStarted()) return;
+            
             //trace("routine#" + id() + ".tryStartingAnimations()");
             var waitingAnimations = animationChannel.waitingAnimations();
             var localWaitingFor = this.waitingFor;

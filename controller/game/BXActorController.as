@@ -177,7 +177,11 @@ package bloxley.controller.game {
         }
 
 
-        public function animateSelect(actor:BXActor, action:BXSelectAction) {
+        public function animateSelect(actor:BXActor, oldActor:BXActor, action:BXSelectAction) {
+            // OVERRIDE ME!
+        }
+
+        public function animateUndoSelect(actor:BXActor, oldActor:BXActor, action:BXSelectAction) {
             // OVERRIDE ME!
         }
         

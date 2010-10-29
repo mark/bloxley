@@ -16,7 +16,6 @@ package bloxley.view.choreography {
 
         public function BXChoreographer() {
             this.routine = createRoutine();
-            
             //listenForAny("BXStartOfChoreography", cancel);
         }
 
@@ -27,7 +26,7 @@ package bloxley.view.choreography {
         ********************/
         
         public function createRoutine():BXRoutine {
-            return new BXRoutine();
+            return new BXRoutine({ ros: true });
         }
         
         public function animationChannel():BXChannel {

@@ -167,7 +167,7 @@ package bloxley.view.sprite {
                 else if (method == "rotation") blend = new BXCircularBlend(this, ValidBlends[method], options);
                 else blend = new BXBlend(this, ValidBlends[method], options);
             }
-
+            
             return blend.autostart();
         }
 

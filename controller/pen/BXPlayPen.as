@@ -3,6 +3,8 @@ package bloxley.controller.pen {
     import bloxley.controller.game.BXPlayController;
     import bloxley.model.data.BXDirection;
     
+    import bloxley.view.animation.BXBlend;
+    
     public class BXPlayPen extends BXPen {
     
         public function BXPlayPen(controller:BXPlayController) {

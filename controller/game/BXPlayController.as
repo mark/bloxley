@@ -36,9 +36,8 @@ package bloxley.controller.game {
         *************************/
         
         override public function onStart() {
-            setupTimer();
             switchToPen("Play");
-            gameLoop.run();
+            gameLoop.later("run");
         }
         
         override public function createPens() {
@@ -53,7 +52,7 @@ package bloxley.controller.game {
     	public function createPhases() {
     	    phase("Starting Game", { call: "startGame"    }).after("User Input");
     	    phase("User Input"                             ).after("Heartbeat",    "waitForInput", validUserActions());
-    	    phase("Heartbeat",     { call: "heartbeat"    }).after("Test For Win", "waitForEvent");
+    	    phase("Heartbeat",     { call: "heartbeat"    }).after("Test For Win");
     	    phase("Test For Win",  { call: "didBeatLevel" }).pass("Win" ).fail("Test For Lose");
     	    phase("Test For Lose", { call: "didLoseLevel" }).pass("Lose").fail("User Input"   );
     	    
@@ -99,7 +98,7 @@ package bloxley.controller.game {
         }
         
         public function pushEvents() {
-            gameLoop.waitForAnimations( caughtEvents );
+            // gameLoop.waitForAnimations( caughtEvents );
         }
 
         public function startMonitoringUserEvents(events:Array) {
@@ -123,6 +122,7 @@ package bloxley.controller.game {
             if (isMonitoringEvent && caughtEvents.length > 0) {
                 finishMonitoringUserEvents();
                 pushEvents();
+                gameLoop.later("run");
             }
         }
         
@@ -212,32 +212,6 @@ package bloxley.controller.game {
     	    // OVERRIDE ME!
     	}
     	
-    	/****************
-    	*               *
-    	* Timer Methods *
-    	*               *
-    	****************/
-
-    	function setupTimer() {
-            var gameTimer = new BXTimer("Game");
-
-            listenFor("BXTimerStart",  gameTimer, initialize);
-            listenFor("BXTimerActive", gameTimer, everyFrame);
-            listenFor("BXTimerTick",   gameTimer, everySecond);
-    	}
-
-    	public function initialize(message:BXMessage) {
-    	    // OVERRIDE ME!
-    	}
-
-    	public function everyFrame(message:BXMessage) {
-    	    // OVERRIDE ME!
-    	}
-
-    	public function everySecond(message:BXMessage) {
-    	    // OVERRIDE ME!
-    	}
-
         /*******************
         *                  *
         * Gameplay Methods *
@@ -245,7 +219,9 @@ package bloxley.controller.game {
         *******************/
         
         public function selectPlayer(character:BXActor) {
-    	    minorEvent( new BXSelectAction(this, character) );
+            if (character != selection()) {
+        	    minorEvent( new BXSelectAction(this, character) );
+            }
         }
         
         public function selectNextPlayer() {

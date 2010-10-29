@@ -29,8 +29,18 @@ package bloxley.controller.event {
         override public function animate() {
             if (newSelection is BXActor) {
                 var actor:BXActor = newSelection as BXActor;
+                var oldActor:BXActor = oldSelection as BXActor;
                 
-                return actor.actorController().animateSelect(actor, this);
+                return actor.actorController().animateSelect(actor, oldActor, this);
+            }
+        }
+
+        override public function animateUndo() {
+            if (newSelection is BXActor) {
+                var actor:BXActor = newSelection as BXActor;
+                var oldActor:BXActor = oldSelection as BXActor;
+                
+                return actor.actorController().animateUndoSelect(actor, oldActor, this);
             }
         }
         
