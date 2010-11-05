@@ -40,7 +40,6 @@ package bloxley.view.sprite {
             options.parent = this;
  
             var newSprite   = new BXCompositeSprite(options);
-            
             elements[options.depth] = newSprite;
 
             if (mainLayer == null) mainLayer = newSprite;

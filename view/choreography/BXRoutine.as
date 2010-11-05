@@ -52,7 +52,7 @@ package bloxley.view.choreography {
         *                   *
         ********************/
         
-        overide public function cleanup() {
+        override public function cleanup() {
             animationChannel.activeAnimations().each(function(anim) {
                 anim.finish();
             });
@@ -178,6 +178,17 @@ package bloxley.view.choreography {
             // Possible: use sets instead of arrays, and then do a remove-then-insert <-- I like this
             // Possible: hold off on this for a bit
         }
+        
+        /*****************
+        *                *
+        * Parent Methods *
+        *                *
+        *****************/
+        
+        override public function setParent(parent:BXSchedulable) {
+            
+        }
+
     }
     
 }

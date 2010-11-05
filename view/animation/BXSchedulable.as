@@ -63,6 +63,20 @@ package bloxley.view.animation {
             later(stopListening);
         }
 
+        /**********
+        *         *
+        * Forcing *
+        *         *
+        **********/
+        
+        public function forceCancel() {
+            post("BXCancelAnimation");
+        }
+        
+        public function setParent(parent:BXSchedulable) {
+            listenFor("BXCancelAnimation", parent, forceCancel);
+        }
+
     }
     
 }

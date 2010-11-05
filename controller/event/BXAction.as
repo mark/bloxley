@@ -260,7 +260,7 @@ package bloxley.controller.event {
             undo();
 
             if (animated) {
-                _animation.finish();
+                _animation.forceCancel();
                 animateUndo();
             }
         }
