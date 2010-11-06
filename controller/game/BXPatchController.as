@@ -76,9 +76,9 @@ package bloxley.controller.game {
         ***************************/
         
     	// This can be overridden, but probably shouldn't be.
-    	function graphicsName(patch:BXPatch):String { return "Patch"; }
+    	public function graphicsName(patch:BXPatch):String { return "Patch"; }
 
-    	function frameName(patch:BXPatch):String { return library().frameForKey(patch.key()); }
+    	public function frameName(patch:BXPatch):String { return library().frameForKey(patch.key()); }
 
         public function registrationAtCenter(patch:BXPatch):Boolean {
             return false;
@@ -157,7 +157,11 @@ package bloxley.controller.game {
         ****************************/
         
         public function animatePatchChange(patch:BXPatch, action:BXPatchChangeAction) {
-            return spriteForPatch(patch).frame(action.newKey);
+            return spriteForPatch(patch).frame(action.newKey, { wait: true });
+        }
+
+        public function animateUndoPatchChange(patch:BXPatch, action:BXPatchChangeAction) {
+            return spriteForPatch(patch).frame(action.oldKey);
         }
         
     	/*****************

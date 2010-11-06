@@ -235,6 +235,8 @@ package bloxley.model.collection {
         public function areAtMost(n:Number):Boolean   { return howMany() <= n; }
 
         public function areLessThan(n:Number):Boolean { return howMany() <  n; }
+        
+        public function areExactly(n:Number):Boolean  { return howMany() == n; }
 
     	/**********
     	*         *

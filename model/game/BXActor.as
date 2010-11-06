@@ -149,6 +149,10 @@ package bloxley.model.game {
     		return active;
     	}
 
+    	public function isDisabled() {
+    		return ! active;
+    	}
+
     	// Make this the currently active player
     	public function makePlayer(current:Boolean) {
     		// SUBCLASS ONLY

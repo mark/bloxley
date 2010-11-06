@@ -51,10 +51,10 @@ package bloxley.controller.game {
 
     	public function createPhases() {
     	    phase("Starting Game", { call: "startGame"    }).after("User Input");
-    	    phase("User Input"                             ).after("Heartbeat",    "waitForInput", validUserActions());
-    	    phase("Heartbeat",     { call: "heartbeat"    }).after("Test For Win");
-    	    phase("Test For Win",  { call: "didBeatLevel" }).pass("Win" ).fail("Test For Lose");
-    	    phase("Test For Lose", { call: "didLoseLevel" }).pass("Lose").fail("User Input"   );
+    	    phase("User Input"                             ).after("Heartbeat", "waitForInput", validUserActions());
+    	    phase("Heartbeat",     { call: "heartbeat"    }).after("Test For Lose");
+    	    phase("Test For Lose", { call: "didLoseLevel" }).pass("Lose").fail("Test For Win");
+    	    phase("Test For Win",  { call: "didBeatLevel" }).pass("Win" ).fail("User Input"  );
     	    
     	    setInitialPhase("Starting Game");
     	}
@@ -196,21 +196,21 @@ package bloxley.controller.game {
     	*                            *
     	*****************************/
     	
-    	public function animateBeatLevel(action:BXAction) {
-    	    // OVERRIDE ME!
-    	}
-    	
-    	public function animateUndoBeatLevel(action:BXAction) {
-    	    // OVERRIDE ME!
-    	}
-    	
-    	public function animateLostLevel(action:BXAction) {
-    	    // OVERRIDE ME!
-    	}
-    	
-    	public function animateUndoLostLevel(action:BXAction) {
-    	    // OVERRIDE ME!
-    	}
+         public function animateBeatLevel(action:BXAction) {
+    	    return showBank("Beat Level", { seconds: 0.5 });
+        }
+        
+         public function animateUndoBeatLevel(action:BXAction) {
+    	    return hideBank("Beat Level");
+        }
+        
+         public function animateLostLevel(action:BXAction) {
+    	    return showBank("Lost Level", { seconds: 0.5 });
+        }
+        
+         public function animateUndoLostLevel(action:BXAction) {
+    	    return hideBank("Lost Level");
+        }
     	
         /*******************
         *                  *
