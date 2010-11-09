@@ -74,14 +74,17 @@ package bloxley.controller.game {
             return null;
         }
         
-        // function actorControllerFor(key:String, options):BXActorController {
-        //     for (var i = 0; i < actorControllers.length; i++) {
-        //         if (key.toLowerCase() == actorControllers[i].key(options).toLowerCase())
-        //             return actorControllers[i];
-        //     }
-        // 
-        //     return null;
-    	// }
+        function actorControllerForKey(key:String):BXActorController {
+            for (var i = 0; i < actorControllers.length; i++) {
+                var controller = actorControllers[i];
+
+                if (key.toLowerCase() == controller.key().toLowerCase())
+                    return controller;
+            }
+        
+            // No controller can handle this key:
+            return null;
+    	}
     	
     	/*******************
     	*                  *
@@ -211,6 +214,20 @@ package bloxley.controller.game {
             }
         }
         
+        function loadActorFromObject(key:String, object:Object) {
+            var actorController = actorControllerForKey(key);
+            
+            if (actorController) {
+                var newActor = actorController.createActorFromObject(object);
+             
+                if (newActor) {
+                    var location = board().getPatch( newActor.get("x"), newActor.get("y") );
+            
+                    board().attachActor(newActor, location);
+                }
+            }
+        }
+        
         /*********************
         *                    *
         * Saving and Loading *
@@ -247,7 +264,7 @@ package bloxley.controller.game {
         	attachBoardToGrid();
         }
         
-        public function loadLevel(rows:Array, objects:Array = null) {
+        public function loadLevel(rows:Array, objects:Object = null) {
             for (var i = 0; i < rows.length; i++) {
             	for (var j = 0; j < rows[i].length; j++) {
             	    var char = rows[i].charAt(j);
@@ -256,6 +273,14 @@ package bloxley.controller.game {
 
             		loadActorFromBoard(char, patch);
             	}
+            }
+            
+            for (var key in objects) {
+                var hashes = objects[key];
+                
+                for (var k = 0; k < hashes.length; k++) {
+                    loadActorFromObject(key, hashes[k]);
+                }
             }
         }
     }

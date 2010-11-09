@@ -197,7 +197,7 @@ package bloxley.controller.pen {
             // For non-character keys
 
             if (keyCode > 36 && keyCode < 41) {
-                arrow(BXDirection.getDirection(keyCode), event.shiftKey, event.altKey, event.ctrlKey);
+                arrow(BXDirection.getDirectionFromKeyboard(keyCode), event.shiftKey, event.altKey, event.ctrlKey);
             }
 
             if (keyCode == 32) {

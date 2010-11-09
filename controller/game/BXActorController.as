@@ -77,7 +77,16 @@ package bloxley.controller.game {
             }
         }
         
-    	public function initializeActor(actor) {
+        public function createActorFromObject(object:Object):BXActor {
+            if (attributeHash) {
+                var options = parseActorAttributes(object);
+                return createActor(options);
+            } else {
+                return null;
+            }
+        }
+        
+    	public function initializeActor(actor:BXActor) {
     	    // SUBCLASS ME!
     	}
 
@@ -235,45 +244,32 @@ package bloxley.controller.game {
             return boardString.indexOf(tile) != -1;
         }
         
-        /*
-        
-    	function loadActorFromXml(board:BXBoard, properties:Array):BXActor {
-    	    var x:Number, y:Number;
+    	function parseActorAttributes(object:Object):Object {
     	    var options = new Object();
 
     	    var includeLocation = attributeHash.location === null || attributeHash.location === true;
 
-    	    for (var k = 0; k < properties.length; k++) {
-    			var key = properties[k].nodeName;
-    			var value = properties[k].childNodes[0].nodeValue;
-
-    			if (key == "x" && includeLocation) {
-    			    x = Number(value);
-    			} else if (key == "y" && includeLocation) {
-    			    y = Number(value);
-    			} else if (attributeHash[key] == "Number") {
+    	    for (var key in object) {
+    			var value = object[key];
+                var type  = attributeHash[key];
+                
+    			if (key == "x" || key == "y") {
+                    options[key] = Math.floor(Number(value));
+    			} else if (type == "Number") {
     			    options[key] = Number(value);
-    			} else if (attributeHash[key] == "Boolean") {
+    			} else if (type == "Boolean") {
     			    options[key] = (value == "yes");
-    			} else if (attributeHash[key] == "Color") {
+    			} else if (type == "Color") {
     			    options[key] = BXColor.getColor(value);
-    			} else if (attributeHash[key] == "String") {
+    			} else if (type == "String") {
     			    options[key] = value;
-    			} else if (attributeHash[key] == "Direction") {
-    			    options[key] = BXDirection[value];
+    			} else if (type == "Direction") {
+    			    options[key] = BXDirection.getDirection(value);
     			}
     		}
 
-    	    if (includeLocation) {
-    	        var patch = board.getPatch(x, y);
-
-    	        return loadActor(patch, options);
-    	    } else {
-    	        return loadActor(board, options);
-    	    }
+            return options;
     	}
-
-        */
         
     	/*****************
     	*                *

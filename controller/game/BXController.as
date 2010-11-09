@@ -22,7 +22,7 @@ package bloxley.controller.game {
         var currentSelection:BXObject; // What the pens are selecting... (actor/region mostly)
         var cursor; // The display element for the current selection
 
-        var queue:BXUndoQueue;   // Undo Queues are controller-specific
+        protected var queue:BXUndoQueue;   // Undo Queues are controller-specific
         
         var sequencer:BXSequencer;
         
@@ -200,10 +200,13 @@ package bloxley.controller.game {
             return new BXChoreographer();
         }
         
-        public function handleEvent(milestone:Boolean, events:Array):BXEvent {
+        public function handleEvent(milestone:Boolean, events):BXEvent {
             var newEvent = new BXEvent(this, milestone);
             
-            newEvent.handle(events);
+            if (events[0] is Array)
+                newEvent.handle([ new BXGroupAction(events[0], "safely") ]);
+            else
+                newEvent.handle(events);
             
             return newEvent;
         }

@@ -23,10 +23,14 @@ package bloxley.model.game {
 
     	var info:Object;
 
-    	public function BXPatch(controller:BXPatchController, key:String) {
+    	public function BXPatch(controller:BXPatchController, key:String, info:Object = null) {
     		this.controller = controller;
 
-    		this.info = new Object();
+    		if (info) {
+    		    this.info = info;
+    		} else {
+    		    this.info = new Object();
+    		}
 
     		// listenFor("BXPatchAnimationCreated",   this, animationCreated);
     		// listenFor("BXPatchAnimationDestroyed", this, animationDestroyed);

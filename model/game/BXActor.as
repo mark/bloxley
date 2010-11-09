@@ -97,7 +97,7 @@ package bloxley.model.game {
     	// Place this object at the given grid anchorPoint
     	public function placeAt(newLocation:BXPatch) {
     		anchorPoint = newLocation;
-    		region = null; // Don't generate region until needed...
+    		regionChanged(); // Don't generate region until needed...
     	}
 
     	/*****************
@@ -112,6 +112,11 @@ package bloxley.model.game {
     		return region;
     	}
 
+        // Next time a region is required, regenerate it...
+        public function regionChanged() {
+            region = null;
+        }
+        
     	// Am I on the given space?
     	public function amIAt(newPatch:BXPatch):Boolean { 
     	    return whereAmI().contains(newPatch);

@@ -14,7 +14,7 @@ package bloxley.controller.game {
 
         var name:String;
         
-        var game:BXGame;
+        protected var game:BXGame;
         
         var sprites:Dictionary;
         
@@ -57,7 +57,7 @@ package bloxley.controller.game {
         
     	public function createPatch(char:String) {
     		var key = tileLibrary.keyForTile(char);
-    		var newPatch = new BXPatch(this, key);
+    		var newPatch = new BXPatch(this, key, { tile: char });
 
             // Note that at this point the patch does not have a location:
     		initializePatch(newPatch);
@@ -106,8 +106,7 @@ package bloxley.controller.game {
         
         // Set it to the correct clip and frame
         function displaySprite(patch:BXPatch, sprite:BXCompositeSprite) {
-            sprite.addSpriteLayer( graphicsName(patch) );
-
+            var layer = sprite.addSpriteLayer( graphicsName(patch) );
             var frame = frameName(patch);
             
             if (frame)
@@ -117,7 +116,8 @@ package bloxley.controller.game {
         function resizeSprite(patch:BXPatch, sprite:BXSprite) {
             // Resize the sprite to the current screen size...
             if (sprite is BXCompositeSprite) {
-                // (sprite as BXCompositeSprite).layer(0).resize([ 1.0, 1.0 ]);
+                (sprite as BXCompositeSprite).layer(0).resize([ 1.0, 1.0 ]);
+                // sprite.resize([ 1.0, 1.0 ]);
             } else {
                 sprite.resize([ 1.0, 1.0 ]);
             }

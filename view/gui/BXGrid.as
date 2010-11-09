@@ -11,8 +11,6 @@ package bloxley.view.gui {
 
     public class BXGrid extends BXGuiElement {
 
-        var geom:BXGeometry;
-
         var layers:Object;
 
         var board:BXBoard;

@@ -78,10 +78,17 @@ package bloxley.controller.event {
         *                *
         *****************/
         
-        public function handle(actions:Array) {
-            for (var i = 0; i < actions.length; i++) {
-                postAction( actions[i] );
+        public function handleArray(array:Array) {
+            for (var i = 0; i < array.length; i++) {
+                if (array[i] is Array)
+                    handleArray( array[i] );
+                else if (array[i])
+                    postAction( array[i] );
             }
+        }
+
+        public function handle(actions:Array) {
+            handleArray( actions );
             
             start();
         }

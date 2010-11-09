@@ -2,6 +2,7 @@ package bloxley.view.sprite {
 
     import bloxley.view.animation.BXFrameAnimation;
     import bloxley.view.sprite.*;
+    import bloxley.view.gui.BXGeometry;
 
     public class BXCompositeSprite extends BXSprite {
 
@@ -27,6 +28,7 @@ package bloxley.view.sprite {
             options.parent = this;
 
             var newSprite   = new BXSprite(clip, options);
+            newSprite.setGeometry(geom);
             elements[options.depth] = newSprite;
 
             if (mainLayer == null) mainLayer = newSprite;
@@ -40,6 +42,7 @@ package bloxley.view.sprite {
             options.parent = this;
  
             var newSprite   = new BXCompositeSprite(options);
+            newSprite.setGeometry(geom);
             elements[options.depth] = newSprite;
 
             if (mainLayer == null) mainLayer = newSprite;
@@ -61,6 +64,20 @@ package bloxley.view.sprite {
             }
         }
 
+        /*******************
+        *                  *
+        * Geometry Methods *
+        *                  *
+        *******************/
+        
+        override public function setGeometry(geom:BXGeometry) {
+            super.setGeometry(geom);
+            
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].setGeometry(geom);
+            }
+        }
+        
         /****************
         *               *
         * Layer Methods *

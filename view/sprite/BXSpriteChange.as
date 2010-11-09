@@ -13,7 +13,7 @@ package bloxley.view.sprite {
 
         public function BXSpriteChange(sprite:BXSprite) {
             this.sprite = sprite;
-            this.changes = new Object();
+            this.changes = { x: 0.0, y: 0.0 };
         }
 
         function get(method):Number {

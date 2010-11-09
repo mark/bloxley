@@ -5,15 +5,16 @@ package bloxley.model.data {
     	var offsetX:Number;
     	var offsetY:Number;
 
+        static var Lookups = new Object();
     	// Direction constants
 
-    	public static var I     = new BXDirection( 0,  0);
+    	public static var I     = new BXDirection( 0,  0, "I");
 
-    	public static var North = new BXDirection( 0, -1);
-    	public static var South = new BXDirection( 0,  1);
+    	public static var North = new BXDirection( 0, -1, "North");
+    	public static var South = new BXDirection( 0,  1, "South");
 
-    	public static var East  = new BXDirection( 1,  0);
-    	public static var West  = new BXDirection(-1,  0);
+    	public static var East  = new BXDirection( 1,  0, "East");
+    	public static var West  = new BXDirection(-1,  0, "West");
 
     	// Numeric constants
 
@@ -26,18 +27,28 @@ package bloxley.model.data {
     	*****************************************/
 
     	// This should be private
-    	public function BXDirection(offsetX:Number, offsetY:Number) {
+    	public function BXDirection(offsetX:Number, offsetY:Number, name:String = null) {
     		this.offsetX = offsetX;
     		this.offsetY = offsetY;
+    		
+    		if (name) {
+    		    Lookups[name] = this;
+    		}
     	}
 
-    	public static function getDirection(arrowKey:Number):BXDirection {
+    	public static function getDirectionFromKeyboard(arrowKey:Number):BXDirection {
     		if (arrowKey < 37 || arrowKey > 40)
     			return I;
     		else
     			return [West, North, East, South][arrowKey - 37];
     	}
 
+        public static function getDirection(by:String):BXDirection {
+            var found = Lookups[by];
+            
+            return found ? found : I;
+        }
+        
     	/*****************
     	*                *
     	* Atomic methods *

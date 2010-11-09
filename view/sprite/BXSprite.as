@@ -4,10 +4,10 @@ package bloxley.view.sprite {
     import flash.display.Sprite;
     import flash.utils.getDefinitionByName;
     
-    import bloxley.base.BXObject;
+    import bloxley.base.*;
     import bloxley.model.game.BXPatch;
+    import bloxley.model.data.BXColor;
     import bloxley.view.gui.BXGeometry;
-    import bloxley.base.BXSystem;
     import bloxley.view.animation.*;
     import bloxley.view.sprite.*;
 
@@ -29,7 +29,7 @@ package bloxley.view.sprite {
 
         var animations:Array;    // The animations that this sprite is currently involved in...
 
-        var geom:BXGeometry;
+        public var geom:BXGeometry;
         
         // Options:
 
@@ -278,6 +278,10 @@ package bloxley.view.sprite {
             return new BXFrameAnimation(this, sequence, opts).autostart();
         }
 
+        public function color(color:BXColor, options = null):BXColorAnimation {
+            return new BXColorAnimation(this, color, copyOptions(options)).autostart();
+        }
+        
         /*****************
         *                *
         * Helper methods *
