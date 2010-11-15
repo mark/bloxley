@@ -143,9 +143,11 @@ package bloxley.controller.game {
 
         // Set it to the correct clip and frame
         function displaySprite(actor:BXActor, sprite:BXCompositeSprite) {
-            sprite.addSpriteLayer(graphicsName(actor), { centered: registrationAtCenter(actor) } );
+            if (graphicsName(actor)) {
+                sprite.addSpriteLayer(graphicsName(actor), { centered: registrationAtCenter(actor) } );
 
-            if (frameName(actor)) sprite.frame( frameName(actor) );
+                if (frameName(actor)) sprite.frame( frameName(actor) );
+            }
         }
 
         function resizeSprite(actor:BXActor, sprite:BXSprite) {

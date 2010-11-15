@@ -12,7 +12,6 @@ package bloxley.controller.game {
     import bloxley.view.gui.BXImage;
     import bloxley.view.sprite.BXSprite;
     
-    
     public class BXPlayController extends BXController {
 
         var caughtEvents:Array;
@@ -232,6 +231,7 @@ package bloxley.controller.game {
         public function moveCharacter(direction:BXDirection, steps:int = 1) {
     	    if (selectedActor()) {
         	    event( new BXMoveAction( selectedActor(), direction, steps ) );
+        	    // if (currentPen) currentPen.hold();
     	    }
     	}
 

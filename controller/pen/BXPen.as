@@ -21,10 +21,13 @@ package bloxley.controller.pen {
 
         public static var currentPen;
 
+        var held:Boolean;
+        
         public function BXPen(controller:BXController) {
             this.controller = controller;
 
-    		allowUndos = true;
+    		this.allowUndos = true;
+    		this.held = false;
 
     		controller.registerPen(this);
         }
@@ -82,6 +85,24 @@ package bloxley.controller.pen {
             // OVERRIDE THIS!
         }
 
+        /***************
+        *              *
+        * Hold Methods *
+        *              *
+        ***************/
+        
+        public function hold() {
+            held = true;
+        }
+        
+        public function release() {
+            held = false;
+        }
+        
+        public function isHeld():Boolean {
+            return held;
+        }
+        
     	/****************
     	*               *
     	* Mouse methods *

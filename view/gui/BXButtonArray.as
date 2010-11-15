@@ -40,7 +40,7 @@ package bloxley.view.gui {
                         var iconX = 48.0 * x;
                         var iconY = 48.0 * y;
                         
-                        var bkgnd = addSpriteLayer(button.backgroundSet());
+                        var bkgnd = addSpriteLayer( button.backgroundSet() );
                         bkgnd.frame( nameForButton(x, y) + "Up" );
                         bkgnd.goto( [iconX, iconY] );
                         
@@ -48,7 +48,7 @@ package bloxley.view.gui {
                         icon.frame( button.icon() );
                         icon.goto( [iconX + 24.0, iconY + 24.0] );
                         
-                        var highlight = addSpriteLayer( "Button Highlight" );
+                        var highlight = addSpriteLayer( "ButtonHighlight" );
                         highlight.goto( [iconX, iconY] );
                         highlight.fade(0.3);
 

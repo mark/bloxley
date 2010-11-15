@@ -133,6 +133,9 @@ package bloxley.controller.game {
                     return;
                 }
             }
+            
+            if (currentPen) currentPen.unset();
+            currentPen = null;
         }
 
         /********************
