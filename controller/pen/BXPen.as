@@ -22,13 +22,17 @@ package bloxley.controller.pen {
         public static var currentPen;
 
         var held:Boolean;
+
+        var selectionButton:BXButton;
         
-        public function BXPen(controller:BXController) {
+        public function BXPen(name:String, controller:BXController) {
             this.controller = controller;
 
     		this.allowUndos = true;
     		this.held = false;
 
+            setName(name);
+            
     		controller.registerPen(this);
         }
 
@@ -65,8 +69,14 @@ package bloxley.controller.pen {
         public function set() {
             BXSystem.screen.getGraphics().addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
             // Mouse.addListener(this);
-            controller.showBank(name() + " Buttons");
+            controller.showBank(name() + " Pen Controls");
+            trace("showBank('" + name() + " Pen Controls')")
             BXPen.currentPen = this;
+
+            if (selectionButton) {
+                selectionButton.highlight();
+            }
+
             onSet();
         }
 
@@ -131,6 +141,10 @@ package bloxley.controller.pen {
     		return true; // Not sure how to handle this right now--it might not even be necessary?
     	}
 
+        public function board():BXBoard {
+            return controller.board();
+        }
+        
     	public function patch():BXPatch {
     		return mouse().patch();
     	}
@@ -140,7 +154,7 @@ package bloxley.controller.pen {
     	}
 
     	public function actors():BXGroup {
-    		return patch().board().allActors().thatAreAt(patch());
+    		return board().allActors().thatAreAt(patch());
     	}
 
     	/********************
@@ -173,7 +187,7 @@ package bloxley.controller.pen {
             // OVERRIDE THIS!
         }
 
-        public function press(char:String) {
+        public function press(char:String, shift:Boolean, alt:Boolean, ctrl:Boolean) {
             // OVERRIDE THIS!
         }
 
@@ -235,31 +249,22 @@ package bloxley.controller.pen {
             
         }
 
-        /*
+        /*****************
+        *                *
+        * Button Methods *
+        *                *
+        *****************/
         
-        public function toXml(current:Boolean):String {
-            var s = "<pen"
-
-            s += " class='" + className(null, true).join('.') + "'";
-            s += " name='" + name() + "'";
-            s += current ? " default='true'" : "";
-            s += " />\n";
-
-            return s;
+        public function button():BXButton {
+            selectionButton = new BXButton("switchToPen", penName, { iconSet: iconSet(), group: "EditorPens" });
+            
+            return selectionButton;
+        }
+        
+        public function iconSet():String {
+            return "StandardIcons";
         }
 
-        public static function loadFromXml(controller:BXController, xml:XML) {
-            var classPath = xml.attributes['class'].split('.');
-            var klass = BXObject.classWithName(classPath);
-            var pen = new klass(controller);
-
-            if (xml.attributes['default']) {
-                controller.switchToPen(pen.name());
-            }
-
-            return pen;
-        }
-        */
     }
 
 }

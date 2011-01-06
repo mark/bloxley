@@ -25,9 +25,10 @@ package bloxley.view.gui {
             options.visible = false;
                 
             super(options);
-            this.owner = owner;
-            
+            setOwner(owner);
+
             this.banks = new Array();
+            owner.register(this);
         }
 
         /***************
@@ -53,6 +54,16 @@ package bloxley.view.gui {
             return namedElements[name];
         }
 
+        /****************
+        *               *
+        * Owner Methods *
+        *               *
+        ****************/
+        
+        public function setOwner(owner) {
+            this.owner = owner;
+        }
+        
         /***************
         *              *
         * Bank Methods *

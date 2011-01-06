@@ -159,7 +159,7 @@ package bloxley.model.game {
     	}
 
     	public function get(infoKey:String) {
-    		return info[infoKey];
+    	    return info[infoKey];
     	}
 
     	public function set(infoKey:String, value) {

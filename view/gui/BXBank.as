@@ -75,6 +75,9 @@ package bloxley.view.gui {
         public function scale(fraction:Number, options = null):BXRoutine {
             return passToElements( function(gui) { return gui.scale(fraction, options) });
         }
-        
+     
+        override public function toString():String {
+            return "#<" + className() + ": " + id() + " name=" + name + ">";
+        }
     }
 }

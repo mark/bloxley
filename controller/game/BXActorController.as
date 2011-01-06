@@ -47,7 +47,7 @@ package bloxley.controller.game {
         
     	public function key(options = null):String {
     	    // OVERRIDE ME!
-    		return null;
+    		return name;
     	}
 
     	public function canBePlayer(actor:BXActor):Boolean {

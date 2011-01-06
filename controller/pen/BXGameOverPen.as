@@ -6,7 +6,7 @@ package bloxley.controller.pen {
     public class BXGameOverPen extends BXPen {
 
         public function BXGameOverPen(controller:BXPlayController) {
-            super(controller);
+            super("GameOver", controller);
         }
         
         public function press_Rr(key, shift:Boolean, alt:Boolean, ctrl:Boolean) {

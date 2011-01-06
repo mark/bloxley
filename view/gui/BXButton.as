@@ -8,6 +8,11 @@ package bloxley.view.gui {
         public static var DEFAULT_BUTTON_ICON_SET = "ButtonIcons";
         public static var DEFAULT_BUTTON_BACKGROUND_SET = "ButtonBackground";
 
+        // Position of the button in an array...
+        var buttonArray:BXButtonArray;
+        var xPos:int;
+        var yPos:int;
+        
         var method:String;
 
         var objects:Array;
@@ -66,7 +71,6 @@ package bloxley.view.gui {
         public function callOnDown():Boolean {
             return options.onDown;
         }
-
         
         public function setOwner(owner) {
             this.owner = owner;
@@ -76,6 +80,32 @@ package bloxley.view.gui {
             owner.respondTo(method, objects);
         }
 
+        /***********************
+        *                      *
+        * Button Array Methods *
+        *                      *
+        ***********************/
+        
+        public function setPosition(buttonArray:BXButtonArray, xPos:int, yPos:int) {
+            this.buttonArray = buttonArray;
+            this.xPos = xPos;
+            this.yPos = yPos;
+        }
+        
+        public function x():int { return xPos; }
+        
+        public function y():int { return yPos; }
+        
+        public function highlight() {
+            buttonArray.highlightButtonInGroup(this);
+        }
+        
+        /*****************
+        *                *
+        * Helper Methods *
+        *                *
+        *****************/
+        
         public function toString():String { return "<Button: " + method + ">"; }
 
     }

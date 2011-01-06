@@ -11,7 +11,7 @@ package bloxley.view.gui {
         var buttons:Array;
         var buttonLayers:Dictionary;
 
-        var currentButton:Object;
+        var currentButton:BXButton;
 
         var buttonGroups:Object;
         var currentButtonInGroup:Object;
@@ -24,9 +24,9 @@ package bloxley.view.gui {
         ];
 
         public function BXButtonArray(owner:BXInterface, buttons:Array, options = null) {
+            this.buttons = buttons;
             super( owner, options );
 
-            this.buttons = buttons;
             this.buttonLayers = new Dictionary();
             
             this.buttonGroups = new Object();
@@ -37,6 +37,8 @@ package bloxley.view.gui {
                     var button = buttons[y][x];
 
                     if (button != null) {
+                        button.setPosition(this, x, y);
+
                         var iconX = 48.0 * x;
                         var iconY = 48.0 * y;
                         
@@ -55,7 +57,7 @@ package bloxley.view.gui {
                         buttonLayers[ button ] = bkgnd;
                         
                         if (button.group()) {
-                            addButtonToGroup(x, y, button.group());
+                            addButtonToGroup(button, button.group());
                         }
                     }
                 }
@@ -68,7 +70,7 @@ package bloxley.view.gui {
         *                    *
         *********************/
         
-        public function setOwner(owner) {
+        override public function setOwner(owner) {
             for (var y = 0; y < buttons.length; y++) {
                 for (var x = 0; x < buttons[y].length; x++) {
                     var button = buttons[y][x];
@@ -112,7 +114,7 @@ package bloxley.view.gui {
             var button = buttons[y][x];
 
             if (button) {
-                currentButton = { x:x, y:y };
+                currentButton = button;
                 setButtonState(x, y, true);
 
                 if (button.callOnDown()) {
@@ -123,31 +125,21 @@ package bloxley.view.gui {
 
         function move(x:Number, y:Number) {
             if (currentButton) {
-                setButtonState(currentButton.x, currentButton.y, currentButton.x == x && currentButton.y == y);
+                setButtonState(currentButton.x(), currentButton.y(), currentButton.x() == x && currentButton.y() == y);
             }
         }
 
         function release(x:Number, y:Number) {
-            setButtonState(currentButton.x, currentButton.y, false);
+            setButtonState(currentButton.x(), currentButton.y(), false);
 
-            if (currentButton.x == x && currentButton.y == y) {
+            if (currentButton.x() == x && currentButton.y() == y) {
                 // Actual button press
 
                 if (! buttons[y][x].callOnDown()) {
                     buttons[y][x].call();
                 }
 
-                if (buttons[y][x].group()) {
-                    var group = buttons[y][x].group();
-
-                    currentButtonInGroup[group] = [x, y];
-
-                    for (var i = 0; i < buttonGroups[group].length; i++) {
-                        var button = buttonGroups[group][i];
-
-                        setButtonState(button[0], button[1], false);
-                    }
-                }
+                highlightButtonInGroup( buttons[y][x] );
             }
 
             currentButton = null;
@@ -173,7 +165,7 @@ package bloxley.view.gui {
             var sprite = buttonLayers[ button ];
             var state:String;
             
-            if (group != null && currentButtonInGroup[group] != null && currentButtonInGroup[group][0] == x && currentButtonInGroup[group][1] == y) {
+            if (group != null && button != null && currentButtonInGroup[group] == button) {
                 state = down ? "Down" : "Toggle";
             } else {
                 state = down ? "Down" : "Up";
@@ -184,80 +176,44 @@ package bloxley.view.gui {
             sprite.frame(frame).start();
         }
 
-        function addButtonToGroup(x:Number, y:Number, group:String) {
-            if (buttonGroups[group] == null) buttonGroups[group] = new Array();
-
-            buttonGroups[group].push([x, y]);
-        }
-
         function buttonSize():Number {
             return 48.0;
         }
 
-        override public function toString():String { return "Button Array:" + id(); }
+        /***********************
+        *                      *
+        * Button Group Methods *
+        *                      *
+        ***********************/
+        
+        function addButtonToGroup(button:BXButton, group:String) {
+            if (buttonGroups[group] == null) buttonGroups[group] = new Array();
 
+            buttonGroups[group].push( button );
+        }
+
+        public function highlightButtonInGroup(button:BXButton) {
+            if (button.group()) {
+                var group = button.group();
+
+                currentButtonInGroup[group] = button;
+
+                for (var i = 0; i < buttonGroups[group].length; i++) {
+                    var groupedButton = buttonGroups[group][i];
+
+                    setButtonState(groupedButton.x(), groupedButton.y(), false);
+                }
+            }
+            
+        }
+        
         /*****************
         *                *
-        * Helper methods *
+        * Helper Methods *
         *                *
         *****************/
-
-        /*
         
-        static function loadFromXml(controller:BXController, xml:XML) {
-            var buttons = new Array();
-
-            for (var i = 0; i < xml.childNodes.length; i++) {
-                var row = xml.childNodes[i];
-
-                if (row.nodeName == "button-row") {
-                    var rowArray = new Array();
-
-                    for (var j = 0; j < row.childNodes.length; j++) {
-                        var btn = row.childNodes[j];
-
-                        if (btn.nodeName == "button") {
-                            var button = BXButton.loadFromXml(btn);
-
-                            rowArray.push(button);
-                        }
-
-                        if (btn.nodeName == "blank") {
-                            rowArray.push(null);
-                        }
-                    }
-
-                    buttons.push(rowArray);
-                }
-            }
-
-            return new BXButtonArray(controller, buttons);
-        }
-
-        function toXml(bank:String) {
-            var s = new String();
-
-            s += "<button-array bank='" + allBanks() + "' left='" + left + "' top='" + top + "' scale='" + fraction + "'>\n";
-
-            for (var i = 0; i < buttons.length; i++) {
-                s += "<button-row>\n";
-
-                for (var j = 0; j < buttons[i].length; j++) {
-                    if (buttons[i][j])
-                        s += buttons[i][j].toXml();
-                    else
-                        s += "<blank />\n";
-                }
-
-                s += "</button-row>\n"
-            }
-
-            s += "</button-array>\n";
-
-            return s;
-        }
-
-        */
+        override public function toString():String { return "Button Array:" + id(); }
 
     }
 

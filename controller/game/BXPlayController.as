@@ -19,8 +19,8 @@ package bloxley.controller.game {
         
         var gameLoop:BXGameLoop;
         
-        public function BXPlayController(name: String, game:BXGame) {
-            super(name, game);
+        public function BXPlayController(game:BXGame) {
+            super("Play", game);
             
             gameLoop = new BXGameLoop(this);
             caughtEvents = new Array();

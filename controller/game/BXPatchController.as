@@ -9,6 +9,7 @@ package bloxley.controller.game {
     import bloxley.controller.io.BXTile;
     import bloxley.controller.io.BXTileLibrary;
     import bloxley.view.sprite.*;
+    import bloxley.view.gui.BXButton;
 
     public class BXPatchController extends BXObject {
 
@@ -20,8 +21,8 @@ package bloxley.controller.game {
         
     	var tileLibrary:BXTileLibrary;
 
-    	function BXPatchController(name:String, game:BXGame) {
-    	    this.name = name;
+    	function BXPatchController(game:BXGame) {
+    	    this.name = "Patch";
     		this.game = game;
     		this.sprites = new Dictionary();
         }
@@ -179,6 +180,23 @@ package bloxley.controller.game {
     	}
 
         */
+        
+        /*****************
+        *                *
+        * Helper Methods *
+        *                *
+        *****************/
+        
+        public function buttons():Array {
+            var keys = tileLibrary.keys();
+            var ary = [];
+            
+            for (var i = 0; i < keys.length; i++) {
+                ary.push( new BXButton( "drawPatch", keys[i], { iconSet: "GameIcons" } ) );
+            }
+            
+            return ary;
+        }
     }
 
 }

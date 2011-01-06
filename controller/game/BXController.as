@@ -7,6 +7,7 @@ package bloxley.controller.game {
     import bloxley.controller.mailbox.BXMailbox;
     import bloxley.controller.pen.*;
     import bloxley.model.game.*;
+    import bloxley.model.collection.BXRegion;
     import bloxley.view.clock.*;
     import bloxley.view.choreography.*;
     import bloxley.view.gui.*;
@@ -26,6 +27,8 @@ package bloxley.controller.game {
         
         var sequencer:BXSequencer;
         
+        var selectionButton:BXButton;
+        
     	/**************
     	*             *
     	* Constructor *
@@ -43,6 +46,8 @@ package bloxley.controller.game {
     		// Initialization methods
 
     		createPens();
+    		
+    		super();
 
     		queue = new BXUndoQueue();
     		
@@ -60,7 +65,12 @@ package bloxley.controller.game {
         }
         
         public function start() {
+            if (selectionButton) {
+                selectionButton.highlight();
+            }
+            
             game.showBank("Main");
+            
             onStart();
         }
         
@@ -120,22 +130,22 @@ package bloxley.controller.game {
             pens.push(pen);
         }
 
-        public function switchToPen(name:String) {
+        public function penNamed(name:String):BXPen {
             for (var i = 0; i < pens.length; i++) {
-                var pen = pens[i];
-
-                if (pen.name() == name) {
-                    if (currentPen) currentPen.unset();
-
-                    currentPen = pen;
-                    currentPen.set();
-
-                    return;
-                }
+                if (pens[i].name() == name) return pens[i];
             }
             
+            return null;
+        }
+
+        public function switchToPen(name:String) {
+            trace("Switch To Pen " + name);
+            
+            var pen = penNamed(name);
+
             if (currentPen) currentPen.unset();
-            currentPen = null;
+            currentPen = pen;
+            if (currentPen) currentPen.set();
         }
 
         /********************
@@ -155,6 +165,14 @@ package bloxley.controller.game {
         public function selectedActor():BXActor {
             if (selection() is BXActor) {
                 return selection() as BXActor;
+            } else {
+                return null;
+            }
+        }
+        
+        public function selectedRegion():BXRegion {
+            if (selection() is BXRegion) {
+                return selection() as BXRegion;
             } else {
                 return null;
             }
@@ -249,6 +267,16 @@ package bloxley.controller.game {
         
         override public function toString():String {
             return className();
+        }
+
+        function iconSet():String {
+            return "StandardIcons";
+        }
+        
+        public function button():BXButton {
+            selectionButton = new BXButton("setCurrentGameController", name, { iconSet: iconSet(), group: "Controller" });
+            
+            return selectionButton;
         }
 
     }

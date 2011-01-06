@@ -51,6 +51,16 @@ package bloxley.controller.io {
     		return null;
     	}
 
+        public function keys():Array {
+            var ary = [];
+            
+            for (var i = 0; i < tiles.length; i++) {
+                ary.push( tiles[i].key() );
+            }
+            
+            return ary;
+        }
+
     }
 
 }

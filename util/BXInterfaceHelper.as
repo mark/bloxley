@@ -4,12 +4,12 @@ package bloxley.util {
     
     public class BXInterfaceHelper {
 
-    	public static var PlayButton         = new BXButton("playGame",  null, { iconSet: "StandardIcons" });
-    	public static var EditButton         = new BXButton("editLevel", null, { iconSet: "StandardIcons" });
+    	public static var PlayButton         = new BXButton("setCurrentGameController", "Play",   { iconSet: "StandardIcons" });
+    	public static var EditButton         = new BXButton("setCurrentGameController", "Editor", { iconSet: "StandardIcons" });
 
-        public static var HandButton         = new BXButton("grabHand",  null, { iconSet: "StandardIcons", group: "EditorPens" });
-        public static var PatchButton        = new BXButton("patchHand", null, { iconSet: "StandardIcons", group: "EditorPens" });
-        public static var RectButton         = new BXButton("rectHand",  null, { iconSet: "StandardIcons", group: "EditorPens" });
+        public static var HandButton         = new BXButton("switchToPen", "Actor", { iconSet: "StandardIcons", group: "EditorPens" });
+        public static var PatchButton        = new BXButton("switchToPen", "Patch", { iconSet: "StandardIcons", group: "EditorPens" });
+        public static var RectButton         = new BXButton("switchToPen", "rectHand", { iconSet: "StandardIcons", group: "EditorPens" });
 
         public static var CropButton         = new BXButton("cropRect",     null, { iconSet: "StandardIcons" });
         public static var InsertTopButton    = new BXButton("insertTop",    null, { iconSet: "StandardIcons" });

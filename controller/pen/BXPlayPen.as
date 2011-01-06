@@ -8,7 +8,7 @@ package bloxley.controller.pen {
     public class BXPlayPen extends BXPen {
     
         public function BXPlayPen(controller:BXPlayController) {
-            super(controller);
+            super("Play", controller);
         }
         
         override public function down(mouse:BXMouseEvent) {

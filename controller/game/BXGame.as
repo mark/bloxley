@@ -42,25 +42,65 @@ package bloxley.controller.game {
         *                    *
         *********************/
         
-        public function controllers(classHash:Object) {
-            for (var key in classHash) {
-                var klass = classHash[key];
-                var controller = new klass(key, this);
-                
-                if (controller is BXPatchController) {
-                    this.pController = controller;
-                } else if (controller is BXController) {
-                    this.gameControllers.push( controller );
-                } else if (controller is BXActorController) {
-                    this.actorControllers.push( controller );
-                }
-            }
+        // public function controllers(classHash:Object) {
+        //     for (var key in classHash) {
+        //         var klass = classHash[key];
+        //         var controller = new klass(key, this);
+        //         
+        //         if (controller is BXPatchController) {
+        //             this.pController = controller;
+        //         } else if (controller is BXController) {
+        //             this.gameControllers.push( controller );
+        //         } else if (controller is BXActorController) {
+        //             this.actorControllers.push( controller );
+        //         }
+        //     }
+        // 
+        //     createControllerButtons();
+        // }
+        
+        // public function controllers(patchControllerClass:Class, actorControllerClasses:Array = null, interactionControllerClasses:Array = null) {
+        //     setPatchController( new patchControllerClass(this) );
+        //     
+        //     if (actorControllerClasses) {
+        //         for (var i = 0; i < actorControllerClasses.length; i++) {
+        //             this.actorControllers.push( new actorControllerClasses[i](this) );
+        //         }
+        //     }
+        // 
+        //     if (interactionControllerClasses) {
+        //         for (var j = 0; j < interactionControllerClasses.length; j++) {
+        //             this.gameControllers.push( new interactionControllerClasses[j](this) );
+        //         }
+        //     }
+        // }
+        
+		public function controllers(...classes) {
+			for (var i = 0; i < classes.length; i++) {
+				var newController = new classes[i](this);
+				
+				if (newController is BXPatchController) {
+					setPatchController(newController);
+				} else if (newController is BXActorController) {
+					addActorController(newController);
+				} else if (newController is BXController) {
+					addInteractionController(newController);
+				}
+			}
+		}
+		
+        public function setPatchController(pController:BXPatchController) {
+            this.pController = pController;
         }
         
         public function patchController():BXPatchController {
             return pController;
         }
         
+		public function addActorController(aController:BXActorController) {
+			this.actorControllers.push( aController );
+		}
+		
         public function actorControllerForTile(tile:String):BXActorController {
             for (var i = 0; i < actorControllers.length; i++) {
                 var controller = actorControllers[i];
@@ -92,6 +132,10 @@ package bloxley.controller.game {
     	*                  *
     	*******************/
     	
+		public function addInteractionController(iController:BXController) {
+			this.gameControllers.push( iController );
+		}
+		
     	public function currentGameController():BXController {
     	    return _currentGameController;
     	}
@@ -136,15 +180,32 @@ package bloxley.controller.game {
         override public function createInterface() {
             setBank("Main");
                 var grid = new BXGrid(this, { gridSize: defaultGridSize() });
-                register( grid );
                 grid.setBoard( board() );
+                grid.goto( defaultBoardLocation() );
                 
+            createControllerButtons();
         }
         
         public function defaultGridSize():Number {
             return 32.0;
         }
         
+        public function defaultBoardLocation():Array {
+            return [ 0.0, 0.0 ];
+        }
+                
+        function createControllerButtons():BXButtonArray {
+            var buttons = [];
+            for (var i = 0; i < gameControllers.length; i++) {
+                buttons.push( gameControllers[i].button() );
+            }
+            
+            setBank("Main");
+                var array = new BXButtonArray(this, [ buttons ], { depth: 1 });
+            
+            return array;
+        }
+
         /****************
         *               *
         * Board Methods *
