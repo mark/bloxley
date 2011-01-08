@@ -47,7 +47,7 @@ package bloxley.controller.game {
                 var buttons = game.patchController().buttons();
                 var array = new BXButtonArray(this, [ buttons ]);
                 array.resize([32.0 * buttons.length, 32.0]);
-                array.goto([10.0, 10.0]);
+                array.goto([4.0, 4.0]);
 
             return array;
         }

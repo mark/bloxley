@@ -6,13 +6,13 @@ package bloxley.base {
     import bloxley.view.clock.BXClock;
     import bloxley.controller.mailbox.BXMailbox;
     import bloxley.view.gui.BXScreen;
-    
+
     public class BXSystem extends BXObject {
 
         static var initialized = false;
 
         public static var screen:BXScreen;
-        
+
         // Set up the game: create a clock, a mailbox, and a top level graphics container
         public static function initialize(stage:Stage) {
             if (initialized) return;
@@ -23,12 +23,12 @@ package bloxley.base {
 
             initialized = true;
         }
-        
+
         public static function screenDimensions():Array {
             var stage = screen.getGraphics();
             return [ stage.stageWidth, stage.stageHeight ];
         }
     }
-    
+
 }
 

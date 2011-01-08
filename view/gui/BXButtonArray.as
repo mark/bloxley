@@ -100,7 +100,6 @@ package bloxley.view.gui {
             this.press(buttonX(), buttonY());
         }
 
-
         override public function onMouseMove(event:MouseEvent) {
             this.move(buttonX(), buttonY());
         }

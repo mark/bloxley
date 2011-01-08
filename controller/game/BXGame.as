@@ -42,53 +42,22 @@ package bloxley.controller.game {
         *                    *
         *********************/
         
-        // public function controllers(classHash:Object) {
-        //     for (var key in classHash) {
-        //         var klass = classHash[key];
-        //         var controller = new klass(key, this);
-        //         
-        //         if (controller is BXPatchController) {
-        //             this.pController = controller;
-        //         } else if (controller is BXController) {
-        //             this.gameControllers.push( controller );
-        //         } else if (controller is BXActorController) {
-        //             this.actorControllers.push( controller );
-        //         }
-        //     }
-        // 
-        //     createControllerButtons();
-        // }
+        public function controllers(...classes) {
+            trace("BXGame#controllers");
+            
+            for (var i = 0; i < classes.length; i++) {
+                var newController = new classes[i](this);
+                
+                if (newController is BXPatchController) {
+                    setPatchController(newController);
+                } else if (newController is BXActorController) {
+                    addActorController(newController);
+                } else if (newController is BXController) {
+                    addInteractionController(newController);
+                }
+            }
+        }
         
-        // public function controllers(patchControllerClass:Class, actorControllerClasses:Array = null, interactionControllerClasses:Array = null) {
-        //     setPatchController( new patchControllerClass(this) );
-        //     
-        //     if (actorControllerClasses) {
-        //         for (var i = 0; i < actorControllerClasses.length; i++) {
-        //             this.actorControllers.push( new actorControllerClasses[i](this) );
-        //         }
-        //     }
-        // 
-        //     if (interactionControllerClasses) {
-        //         for (var j = 0; j < interactionControllerClasses.length; j++) {
-        //             this.gameControllers.push( new interactionControllerClasses[j](this) );
-        //         }
-        //     }
-        // }
-        
-		public function controllers(...classes) {
-			for (var i = 0; i < classes.length; i++) {
-				var newController = new classes[i](this);
-				
-				if (newController is BXPatchController) {
-					setPatchController(newController);
-				} else if (newController is BXActorController) {
-					addActorController(newController);
-				} else if (newController is BXController) {
-					addInteractionController(newController);
-				}
-			}
-		}
-		
         public function setPatchController(pController:BXPatchController) {
             this.pController = pController;
         }
@@ -178,10 +147,12 @@ package bloxley.controller.game {
         ***************/
         
         override public function createInterface() {
+            //trace("BXGame#createInterface")
+
             setBank("Main");
                 var grid = new BXGrid(this, { gridSize: defaultGridSize() });
                 grid.setBoard( board() );
-                grid.goto( defaultBoardLocation() );
+                grid.goto( defaultBoardLocation(), { ignoreGeometry: false } );
                 
             createControllerButtons();
         }
