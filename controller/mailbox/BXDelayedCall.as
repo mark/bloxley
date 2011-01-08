@@ -25,10 +25,12 @@ package bloxley.controller.mailbox {
         }
 
         public function call() {
+            var args = info ? [ info ] : [];
+            
             if (action is Function) {
-                action.call(self, info);
+                action.apply(self, args);
             } else {
-                self[action].call(self, info);
+                self[action].apply(self, args);
             }
         }
 

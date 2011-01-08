@@ -127,7 +127,7 @@ package bloxley.view.sprite {
             }
         }
 
-        public function repaint(info) {
+        public function repaint(...rest) {
             updates.update();
             updates.clearChanges();
             updatedThisFrame = false;
