@@ -39,8 +39,8 @@ package bloxley.view.gui {
                     if (button != null) {
                         button.setPosition(this, x, y);
 
-                        var iconX = 48.0 * x;
-                        var iconY = 48.0 * y;
+                        var iconX = buttonSize() * x;
+                        var iconY = buttonSize() * y;
                         
                         var bkgnd = addSpriteLayer( button.backgroundSet() );
                         bkgnd.frame( nameForButton(x, y) + "Up" );
@@ -48,7 +48,7 @@ package bloxley.view.gui {
                         
                         var icon = addSpriteLayer( button.iconSet() );
                         icon.frame( button.icon() );
-                        icon.goto( [iconX + 24.0, iconY + 24.0] );
+                        icon.goto( [iconX + buttonSize() * 0.5, iconY + buttonSize() * 0.5] );
                         
                         var highlight = addSpriteLayer( "ButtonHighlight" );
                         highlight.goto( [iconX, iconY] );
@@ -88,26 +88,25 @@ package bloxley.view.gui {
         *              *
         ***************/
         
+        function buttonX():int {
+            return Math.floor(getGraphics().mouseX / this.buttonSize());
+        }
+        
+        function buttonY():int {
+            return Math.floor(getGraphics().mouseY / this.buttonSize());
+        }
+        
         override public function onMouseDown(event:MouseEvent) {
-            var buttonY = Math.floor((event.stageY) / this.buttonSize());
-            var buttonX = Math.floor((event.stageX) / this.buttonSize());
-            
-            this.press(buttonX, buttonY);
+            this.press(buttonX(), buttonY());
         }
 
 
         override public function onMouseMove(event:MouseEvent) {
-            var buttonY = Math.floor((event.stageY) / this.buttonSize());
-            var buttonX = Math.floor((event.stageX) / this.buttonSize());
-
-            this.move(buttonX, buttonY);
+            this.move(buttonX(), buttonY());
         }
 
         override public function onMouseUp(event:MouseEvent) {
-            var buttonY = Math.floor((event.stageY) / this.buttonSize());
-            var buttonX = Math.floor((event.stageX) / this.buttonSize());
-
-            this.release(buttonX, buttonY);
+            this.release(buttonX(), buttonY());
         }
 
         function press(x:Number, y:Number) {

@@ -61,6 +61,9 @@ package bloxley.controller.io {
             return ary;
         }
 
+        public function count():int {
+            return tiles.length;
+        }
     }
 
 }

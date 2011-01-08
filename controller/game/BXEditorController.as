@@ -44,10 +44,12 @@ package bloxley.controller.game {
         
         function createPatchButtons():BXButtonArray {
             setBank("Patch Pen Controls");
-                var array = new BXButtonArray(this, [ game.patchController().buttons() ], { depth: 1 });
+                var buttons = game.patchController().buttons();
+                var array = new BXButtonArray(this, [ buttons ]);
+                array.resize([32.0 * buttons.length, 32.0]);
+                array.goto([10.0, 10.0]);
 
             return array;
-            
         }
 
         /*****************
