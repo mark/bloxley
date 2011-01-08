@@ -18,6 +18,7 @@ package bloxley.view.gui {
         static var LAYERS = [ "underlayLayer", "patchLayer", "innerLayer", "actorLayer", "overlayLayer" ];
 
         public function BXGrid(owner:BXInterface, options:Object) {
+			options.layer = "game";
             super( owner, options );
 
             this.geom = new BXGeometry( this, options.gridSize );

@@ -53,7 +53,7 @@ package bloxley.view.sprite {
             this.centered   = options.centered;
             this.animations = new Array();
 
-            this.graphics = generateGraphics(clip, options.parent, options.depth, options.visible === false);
+            this.graphics = generateGraphics(clip, options.parent, options.depth, options.visible === false, options.layer);
             this.virtual  = { dx: 0.0, dy: 0.0 };
     		this.updates  = new BXSpriteChange(this);
         }
@@ -72,7 +72,7 @@ package bloxley.view.sprite {
             this.geom = geom;
         }
         
-        public function generateGraphics(clip:String, parent, depth:int, hidden:Boolean) {
+        public function generateGraphics(clip:String, parent, depth:int, hidden:Boolean, layer:String) {
             var graphicsClass:Class;
             
             if (clip) {
@@ -92,9 +92,8 @@ package bloxley.view.sprite {
         		mc.gotoAndStop(1);
             }
 
-            if (parent == null) parent = BXSystem.screen;
-
-            parent.getGraphics().addChildAt(mc, depth);
+            if (parent == null) parent = BXSystem.screen.layer(layer);
+			            parent.getGraphics().addChildAt(mc, depth);
             this.depth = depth;
             
     		return mc;

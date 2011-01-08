@@ -196,12 +196,13 @@ package bloxley.controller.game {
                 
         function createControllerButtons():BXButtonArray {
             var buttons = [];
+            trace("in createControllerButton(), found " + gameControllers.length + " controllers");
             for (var i = 0; i < gameControllers.length; i++) {
                 buttons.push( gameControllers[i].button() );
             }
             
             setBank("Main");
-                var array = new BXButtonArray(this, [ buttons ], { depth: 1 });
+                var array = new BXButtonArray(this, [ buttons ]);
             
             return array;
         }

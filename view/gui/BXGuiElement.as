@@ -23,7 +23,7 @@ package bloxley.view.gui {
         public function BXGuiElement(owner:BXInterface, opts:Object = null) {
             var options = copyOptions(opts);
             options.visible = false;
-                
+            if (options.layer == null) options.layer = "interface"
             super(options);
             setOwner(owner);
 

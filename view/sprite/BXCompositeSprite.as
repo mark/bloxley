@@ -54,12 +54,12 @@ package bloxley.view.sprite {
             return sprite;
         }
 
-        function getNewDepth(givenDepth:Number):Number {
+        function getNewDepth(givenDepth:Number):Number {			
             if (isNaN(givenDepth)) {
                 return nextDepth++;
             } else {
                 if (givenDepth >= nextDepth) nextDepth = givenDepth + 1;
-
+				
                 return givenDepth;
             }
         }
