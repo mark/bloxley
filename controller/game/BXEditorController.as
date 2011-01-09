@@ -16,7 +16,7 @@ package bloxley.controller.game {
         }
 
         override public function onStart() {
-            // showBank("Pen Buttons");
+            showBank("Pen Buttons");
             switchToPen("Patch");
         }
 
@@ -26,7 +26,7 @@ package bloxley.controller.game {
             var actorPen = new BXActorPen(this);
             actorPen.setName("Actor");
             
-            var patchPen = new BXPatchPen(this);
+            var patchPen = new BXPatchPen(this, game.patchController());
         }
 
         override public function createInterface() {
@@ -39,6 +39,11 @@ package bloxley.controller.game {
 
         function createPenButtons():BXButtonArray {
             setBank("Pen Buttons");
+                var buttons = penButtons();
+                var array = new BXButtonArray(this, [ buttons ]);
+                array.resize([32.0 * buttons.length, 32.0]);
+                array.goto([4.0, 4.0]);
+
             return null;
         }
         
@@ -47,7 +52,7 @@ package bloxley.controller.game {
                 var buttons = game.patchController().buttons();
                 var array = new BXButtonArray(this, [ buttons ]);
                 array.resize([32.0 * buttons.length, 32.0]);
-                array.goto([4.0, 4.0]);
+                array.goto([20.0 + (pens.length * 32.0), 4.0]);
 
             return array;
         }

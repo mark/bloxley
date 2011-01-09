@@ -83,7 +83,7 @@ package bloxley.controller.pen {
         public function unset() {
             BXSystem.screen.getGraphics().removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
     	    // Mouse.removeListener(this);
-            controller.hideBank(name() + " Buttons");
+            controller.hideBank(name() + " Pen Controls");
     	    onUnset();
         }
 

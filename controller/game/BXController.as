@@ -148,6 +148,16 @@ package bloxley.controller.game {
             if (currentPen) currentPen.set();
         }
 
+        public function penButtons():Array {
+            var buttons = new Array();
+            
+            for (var i = 0; i < pens.length; i++) {
+                buttons.push( pens[i].button() );
+            }
+            
+            return buttons;
+        }
+        
         /********************
         *                   *
         * Selection methods *

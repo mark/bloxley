@@ -2,21 +2,26 @@ package bloxley.controller.pen {
     
     import bloxley.controller.event.*;
     import bloxley.controller.game.BXEditorController;
+    import bloxley.controller.game.BXPatchController;
     import bloxley.controller.pen.*;
     import bloxley.model.collection.BXRegion;
 
     public class BXPatchPen extends BXPen {
 
     	var key:String;
-
-    	public function BXPatchPen(controller:BXEditorController) {
+    	var keyedButtons:Object;
+        
+    	public function BXPatchPen(controller:BXEditorController, patchController:BXPatchController) {
             super("Patch", controller);
-
-    		key = "Wall";
+            
+            keyedButtons = patchController.keyedButtons();
     	}
 
     	public function setKey(key:String) {
     		this.key = key;
+
+    		var button = keyedButtons[ key ];
+    		if (button) button.highlight();
     	}
 
     	/********************
@@ -43,7 +48,7 @@ package bloxley.controller.pen {
         ********************/
 
         override public function down(mouse:BXMouseEvent) {
-            if (patch() != null) {
+            if (key != null && patch() != null) {
                 controller.respondTo("changePatch", [ patch(), key ]);
             }
         }

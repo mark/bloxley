@@ -21,6 +21,8 @@ package bloxley.controller.game {
         
     	var tileLibrary:BXTileLibrary;
 
+        var buttonHash:Object;
+        
     	function BXPatchController(game:BXGame) {
     	    this.name = "Patch";
     		this.game = game;
@@ -191,12 +193,27 @@ package bloxley.controller.game {
         *                *
         *****************/
         
+        public function keyedButtons():Object {
+            if (buttonHash == null) {
+                buttonHash = new Object();
+                var keys = tileLibrary.keys();
+
+                for (var i = 0; i < keys.length; i++) {
+                    buttonHash[ keys[i] ] = new BXButton( "drawPatch", keys[i], { iconSet: "GameIcons", group: "Patch Buttons" } );
+                }
+            }
+            
+            return buttonHash;
+        }
+
         public function buttons():Array {
+            if (buttonHash == null) keyedButtons();
+            
             var keys = tileLibrary.keys();
             var ary = [];
             
             for (var i = 0; i < keys.length; i++) {
-                ary.push( new BXButton( "drawPatch", keys[i], { iconSet: "GameIcons" } ) );
+                ary.push( buttonHash[ keys[i] ] );
             }
             
             return ary;
