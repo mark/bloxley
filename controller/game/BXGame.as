@@ -152,7 +152,7 @@ package bloxley.controller.game {
             setBank("Main");
                 var grid = new BXGrid(this, { gridSize: defaultGridSize() });
                 grid.setBoard( board() );
-                grid.goto( defaultBoardLocation(), { ignoreGeometry: false } );
+                grid.goto( defaultBoardLocation(), { ignoreGeometry: true } );
                 
             createControllerButtons();
         }

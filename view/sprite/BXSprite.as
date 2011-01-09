@@ -182,7 +182,7 @@ package bloxley.view.sprite {
             
                 if (options.speed) options.speed = geom.lengthForCells(options.speed);
             } else if (where is Array) {
-                if (geom != null && options.ignoreGeometry !== false) {
+                if (geom != null && ! options.ignoreGeometry) {
                     options.to_x = geom.gridToScreenX(where[0], isCentered());
                     options.to_y = geom.gridToScreenY(where[1], isCentered());
                 } else {

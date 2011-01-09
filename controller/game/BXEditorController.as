@@ -11,7 +11,12 @@ package bloxley.controller.game {
     
     public class BXEditorController extends BXController {
         
+        var layout:BXLayout;
+        
         public function BXEditorController(game:BXGame) {
+            this.layout = new BXLayout("horizontal");
+            layout.setPosition(4.0, 4.0);
+            
             super("Editor", game);
         }
 
@@ -42,7 +47,8 @@ package bloxley.controller.game {
                 var buttons = penButtons();
                 var array = new BXButtonArray(this, [ buttons ]);
                 array.resize([32.0 * buttons.length, 32.0]);
-                array.goto([4.0, 4.0]);
+                layout.place( array );
+                layout.gap( 16.0 );
 
             return null;
         }
@@ -52,7 +58,8 @@ package bloxley.controller.game {
                 var buttons = game.patchController().buttons();
                 var array = new BXButtonArray(this, [ buttons ]);
                 array.resize([32.0 * buttons.length, 32.0]);
-                array.goto([20.0 + (pens.length * 32.0), 4.0]);
+                layout.place( array );
+                layout.gap( 16.0 );
 
             return array;
         }
