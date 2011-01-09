@@ -46,6 +46,10 @@ package bloxley.controller.game {
             }
         }
         
+        public function orderTiles(...tileOrder) {
+            tileLibrary.orderTiles(tileOrder);
+        }
+        
     	public function library():BXTileLibrary {
     		return tileLibrary;
     	}

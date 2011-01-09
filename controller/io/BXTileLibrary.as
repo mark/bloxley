@@ -51,6 +51,19 @@ package bloxley.controller.io {
     		return null;
     	}
 
+        public function orderTiles(tileOrder) {
+            var newTiles = [];
+            
+            for (var i = 0; i < tileOrder.length; i++) {
+        		for (var j = 0; j < tiles.length; j++) {
+        			if (tiles[j].key() == tileOrder[i])
+        				newTiles.push( tiles[j] );
+        		}
+            }
+            
+            tiles = newTiles;
+        }
+        
         public function keys():Array {
             var ary = [];
             
