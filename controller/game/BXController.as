@@ -141,7 +141,7 @@ package bloxley.controller.game {
         public function switchToPen(name:String) {
             trace("Switch To Pen " + name);
             
-            var pen = penNamed(name);
+            var pen = name ? penNamed(name) : null;
 
             if (currentPen) currentPen.unset();
             currentPen = pen;

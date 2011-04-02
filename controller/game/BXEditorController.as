@@ -6,18 +6,20 @@ package bloxley.controller.game {
     import bloxley.controller.pen.*;
     import bloxley.controller.event.*;
     import bloxley.view.gui.*;
+    import bloxley.view.sprite.BXSprite;
+    import bloxley.view.layout.BXLayout;
     
     import bloxley.util.BXInterfaceHelper;
     
     public class BXEditorController extends BXController {
         
         var layout:BXLayout;
+        var focusRing:BXSprite;
         
         public function BXEditorController(game:BXGame) {
-            this.layout = new BXLayout("horizontal");
-            layout.setPosition(4.0, 4.0);
-            
             super("Editor", game);
+            
+            focusRing = new BXSprite("FocusRing", { layer: "interface", visible: false });
         }
 
         override public function onStart() {
@@ -25,6 +27,11 @@ package bloxley.controller.game {
             switchToPen("Patch");
         }
 
+        override public function onFinish() {
+            hideBank("Pen Buttons");
+            switchToPen(null);
+        }
+        
         override public function createPens() {
             trace("createPens()");
             
@@ -32,11 +39,11 @@ package bloxley.controller.game {
             actorPen.setName("Actor");
             
             var patchPen = new BXPatchPen(this, game.patchController());
+            
+            new BXColorPen(this);
         }
 
         override public function createInterface() {
-            trace("createInterface");
-         
             createPenButtons();
             
             createPatchButtons();
@@ -47,8 +54,9 @@ package bloxley.controller.game {
                 var buttons = penButtons();
                 var array = new BXButtonArray(this, [ buttons ]);
                 array.resize([32.0 * buttons.length, 32.0]);
-                layout.place( array );
-                layout.gap( 16.0 );
+                trace("setting button array length to " + 32.0 * buttons.length);
+                trace("but will return " + array.get("width"));
+                game.layout().place( array, "Controls", 2 );
 
             return null;
         }
@@ -57,9 +65,9 @@ package bloxley.controller.game {
             setBank("Patch Pen Controls");
                 var buttons = game.patchController().buttons();
                 var array = new BXButtonArray(this, [ buttons ]);
+                
                 array.resize([32.0 * buttons.length, 32.0]);
-                layout.place( array );
-                layout.gap( 16.0 );
+                game.layout().place( array, "Controls", 3 );
 
             return array;
         }
@@ -78,6 +86,10 @@ package bloxley.controller.game {
             event( new BXPatchFillAction(this, region, newKey) );
         }
         
+        public function selectActor(actor:BXActor) {
+            
+        }
+        
         /********************
         *                   *
         * Animation Methods *
@@ -94,6 +106,20 @@ package bloxley.controller.game {
             var sprite = patch.patchController().spriteForPatch( patch );
 
             return sprite.frame( oldValue );
+        }
+
+        // public function animateFocusAction(action:BXFocusAction, actor:BXActor) {
+        public function animateFocusAction(action:BXAction, actor:BXActor) {
+            var sprite = actor.actorController().spriteForActor( actor );
+                        
+            return [
+                focusRing.show(),
+//                focusRing.show({ wait: true }),
+                focusRing.goto([ sprite.get("x"), sprite.get("y") ]),
+//                focusRing.goto([ sprite.get("x"), sprite.get("y") ], { wait: true }),
+                focusRing.resize([ sprite.get("width"), sprite.get("height") ])
+//                focusRing.resize([ sprite.get("width"), sprite.get("height") ], { wait: true })
+            ];
         }
 
     }

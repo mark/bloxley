@@ -71,14 +71,14 @@ package bloxley.controller.pen {
         ********************/
 
         override public function down(mouse:BXMouseEvent) {
-            // var obj = board().allActors().thatAreAt(patch()).theFirst();
-            // 
-            // if (obj != null) {
-            //     object = obj;
-            //     this.newObject = false;
-            // 
-    		// 	currentAction = new BXSelectionAction(controller).wait(true);
-            // }
+            var obj = board().allActors().thatAreAt(patch()).theFirst();
+            
+            if (obj != null) {
+                // object = obj;
+                // this.newObject = false;
+                controller.respondTo("animateFocusAction", [ null, obj ]);
+    		//	currentAction = new BXSelectionAction(controller).wait(true);
+            }
         }
 
         public function move() {

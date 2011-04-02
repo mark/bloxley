@@ -9,6 +9,7 @@ package bloxley.controller.game {
     import bloxley.model.game.*;
     import bloxley.view.clock.*;
     import bloxley.view.gui.*;
+    import bloxley.view.layout.BXLayout;
     import bloxley.util.BXInterfaceHelper;
     
     public class BXGame extends BXInterface {
@@ -22,7 +23,8 @@ package bloxley.controller.game {
         var _currentGameController:BXController;
         
         var gameboard:BXBoard; // The currently loaded level
-        
+
+        var screenLayout:BXLayout;
         var globalGuiElements:Array;
 
         // var levelLoader:BXLevelLoader;
@@ -147,12 +149,17 @@ package bloxley.controller.game {
         ***************/
         
         override public function createInterface() {
-            //trace("BXGame#createInterface")
+            trace("BXGame#createInterface")
 
             setBank("Main");
                 var grid = new BXGrid(this, { gridSize: defaultGridSize() });
                 grid.setBoard( board() );
-                grid.goto( defaultBoardLocation(), { ignoreGeometry: true } );
+                
+                if (layout()) {
+                    layout().place( grid, "Board" );
+                } else {
+                    grid.goto( defaultBoardLocation(), { ignoreGeometry: true } );
+                }
                 
             createControllerButtons();
         }
@@ -164,7 +171,15 @@ package bloxley.controller.game {
         public function defaultBoardLocation():Array {
             return [ 0.0, 0.0 ];
         }
-                
+        
+        public function setLayout(screenLayout:BXLayout) {
+            this.screenLayout = screenLayout;
+        }
+        
+        public function layout():BXLayout {
+            return screenLayout;
+        }
+        
         function createControllerButtons():BXButtonArray {
             var buttons = [];
             trace("in createControllerButton(), found " + gameControllers.length + " controllers");
@@ -174,6 +189,11 @@ package bloxley.controller.game {
             
             setBank("Main");
                 var array = new BXButtonArray(this, [ buttons ]);
+                array.resize([32.0 * buttons.length, 32.0]);
+
+                if (layout()) {
+                    layout().place( array, "Controls", 1 );
+                }
             
             return array;
         }

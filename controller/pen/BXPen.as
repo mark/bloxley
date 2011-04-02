@@ -68,9 +68,7 @@ package bloxley.controller.pen {
 
         public function set() {
             BXSystem.screen.getGraphics().addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-            // Mouse.addListener(this);
             controller.showBank(name() + " Pen Controls");
-            trace("showBank('" + name() + " Pen Controls')")
             BXPen.currentPen = this;
 
             if (selectionButton) {
@@ -82,7 +80,6 @@ package bloxley.controller.pen {
 
         public function unset() {
             BXSystem.screen.getGraphics().removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-    	    // Mouse.removeListener(this);
             controller.hideBank(name() + " Pen Controls");
     	    onUnset();
         }

@@ -30,22 +30,28 @@ package bloxley.view.sprite {
         }
 
         public function update() {
+            var didChange = false;
+            var visibilityChanged = false;
+            
             var clip = sprite.getGraphics();
             var virt = sprite.getVirtual();
             
             if (changes.x != null) {
                 clip.x = changes.x;
                 realX  = changes.x;
+                didChange = true;
             }    
 
             if (changes.dx != null) {
                 clip.x  = realX + changes.dx;
                 virt.dx = changes.dx;
+                didChange = true;
             }
 
             if (changes.y != null) {
                 clip.y = changes.y;
                 realY  = changes.y;
+                didChange = true;
             }
 
             if (changes.dy != null) {
@@ -56,17 +62,42 @@ package bloxley.view.sprite {
             var oldRotation = clip.rotation;
             clip.rotation = 0;
 
-            if (changes.width != null) clip.width = changes.width;
-            if (changes.height != null) clip.height = changes.height;
+            if (changes.width != null) {
+                clip.width = changes.width;
+                didChange = true;
+            }
+            
+            if (changes.height != null) {
+                clip.height = changes.height;
+                didChange = true;
+            }
 
-            if (changes.rotation != null)
+            if (changes.rotation != null) {
                 clip.rotation = changes.rotation;
-            else
+                didChange = true;
+            } else {
                 clip.rotation = oldRotation;
+            }
 
-            if (changes.fade != null) clip.alpha = changes.fade;
+            if (changes.fade != null) {
+                didChange = true;
+                var oldAlpha = clip.alpha;
+                clip.alpha = changes.fade;
+                
+                if (oldAlpha < 0.1 && changes.fade >= 0.1 || oldAlpha >= 0.1 && changes.fade < 0.1) {
+                    visibilityChanged = true;
+                }
+            }
 
-            if (changes.frame != null) clip.gotoAndStop(changes.frame);
+            if (changes.frame != null) {
+                didChange = true;
+                clip.gotoAndStop(changes.frame);
+            }
+            
+            // trace("didChange = " + didChange);
+            sprite.post("BXSpriteUpdated");
+            
+            if (visibilityChanged) sprite.post("BXSpriteVisibilityChanged");
         }
 
         function clearChanges() {

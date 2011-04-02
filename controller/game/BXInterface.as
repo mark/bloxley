@@ -19,7 +19,8 @@ package bloxley.controller.game {
         	this.interfaceBanks = new Object();
             this.allInterfaceElements = new Array();
 
-    		createInterface();
+    		// createInterface();
+    		later("createInterface");
         }
         
         /****************
